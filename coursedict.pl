@@ -1,5 +1,5 @@
 % Dictionary of basic course information for use by the cogs planner.
-
+look I made a change 
 % course(X,Y) is true if Y is a valid course code in a department.
 course(anth,100).
 course(anth,417).
