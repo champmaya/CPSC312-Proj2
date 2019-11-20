@@ -1,0 +1,1 @@
+% Dictionary of basic course information for use by the cogs planner.
