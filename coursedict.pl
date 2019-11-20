@@ -44,8 +44,34 @@ credits(course(phil, 455), 3).
 credits(course(psyc, 365), 3).
 
 % modules
-
-
+credits(course(anth, 100), 3).
+credits(course(anth, 417), 3).
+credits(course(asia, 371), 3).
+credits(course(asia, 378), 3).
+credits(course(asia, 470), 3).
+credits(course(audi, 402), 3).
+credits(course(audi, 403), 2).
+credits(course(biol, 111), 3).
+credits(course(biol, 200), 3).
+credits(course(biol, 300), 3).
+credits(course(biol, 361), 3).
+credits(course(biol, 362), 2).
+credits(course(biol, 364), 3).
+credits(course(biol, 455), 3).
+credits(course(biol, 458), 3).
+credits(course(biol, 359), 3).
+credits(course(caps, 301), 6).
+credits(course(comm, 291), 3).
+credits(course(cpen, 221), 4).
+credits(course(cpen, 321), 4).
+credits(course(cpen, 331), 4).
+credits(course(cpsc, 304), 3).
+credits(course(cpsc, 310), 3).
+credits(course(cpsc, 311), 3).
+credits(course(cpsc, 312), 3).
+credits(course(cpsc, 314), 3).
+credits(course(cpsc, 317), 3).
+credits(course(cpsc, 319), 3).
 
 % course(X,Y) is true if Y is a valid course code in a department.
 course(anth,100).
@@ -65,7 +91,7 @@ course(biol,455).
 course(biol,458).
 course(biol,459).
 course(caps,301).
-course(cogs,200).
+course(cogs,200). %new
 course(cogs,300). %new 
 course(cogs,303). %new
 course(cogs,303). %new
