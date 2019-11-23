@@ -72,6 +72,19 @@ credits(course(cpsc, 312), 3).
 credits(course(cpsc, 314), 3).
 credits(course(cpsc, 317), 3).
 credits(course(cpsc, 319), 3).
+credits(course(cpsc, 340), 3).
+credits(course(cpsc, 344), 3).
+credits(course(cpsc, 404), 3).
+credits(course(cpsc, 416), 3).
+credits(course(cpsc, 420), 3).
+credits(course(cpsc, 421), 3).
+credits(course(cpsc, 422), 3).
+credits(course(cpsc, 425), 3).
+credits(course(cpsc, 430), 3).
+credits(course(cpsc, 444), 3).
+credits(course(cpsc, 445), 3).
+credits(course(ling, 430), 3).
+% still lots of these to do (if we can stand it)
 
 % course(X,Y) is true if Y is a valid course code in a department.
 course(anth,100).
