@@ -75,6 +75,16 @@ filterFaculty(Fac,[H|T],[]) :-
 	filterFaculty(Fac,T,[]).
 filterFaculty(_,[],[]).
 
+%totalNumberOfCredits([H|T], s) is true if X is the sum of all credits in the list of courses 
+%test case: totalNumberOfCredits([], X). X = 0;
+%test case: totalNumberOfCredits([course(phil,220)], X). X = 3
+%test case: totalNumberOfCredits([course(cpsc,110), course(cpsc,121)], X). X = 8 
+totalNumberOfCredits([], 0). 
+totalNumberOfCredits([course(Name, Number)| T], S) :-
+	credits(course(Name,Number), Credits),
+	totalNumberOfCredits(T, ST),
+	S is Credits+ST.
+
 
 
 

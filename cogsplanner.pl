@@ -1,16 +1,15 @@
 %:- include("coursedict.pl").
 :- include("coursefunctions.pl").
 
-
-% Original code from Abel Waller and Gareth Antle. Their code found here: https://github.com/unoctium1/COGS-Module-Recommender. We have added information about other courses in the cpsc cogs degree. Not just modules.
-% Furthermore we have improved the natural language capacity of the program so that more questions can be asked in more natural-sounding English.
-% :- module(cogsmodules,[course/2,faculty/2,isModule/1,requires/2,newUser/0,go/1,isEquiv/2]). - Devyani and Alex 
-
+%unsure if we actually need these:
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
 
-% to use try:
-%	go([]).
+
+% Original code from Abel Waller and Gareth Antle. Their code found here: https://github.com/unoctium1/COGS-Module-Recommender. We have added information about other courses in the cpsc cogs degree. Not just modules.
+% Furthermore we have improved the natural language capacity of the program so that more questions can be asked in more natural-sounding English.
+% :- module(cogsmodules,[course/2,faculty/2,isModule/1,requires/2,newUser/0,go/1,isEquiv/2]). <-????? TODO 
+
 
 % This a program that helps cogs students in the computer science stream plan their degree. It includes answers to queries about the degree itself, the number of credits required etc. 
 % It requires the user to enter a list of courses already taken
@@ -20,7 +19,8 @@
 % our system distinguishes between eligible courses (where the user meets all the prerequisites), and 
 % possible courses (where the user meets some of the prerequisites) <- not sure about this yet - Dev
 
-% try asking:
+% to begin enter:
+%?- start.
 %	Is course cpsc 320?
 %	Is course cpsc 123?
 %	What is a module course?
@@ -34,8 +34,8 @@
 
 
 % useful for reading and writing: http://alumni.cs.ucr.edu/~vladimir/cs171/prolog_2.pdf
-%start([]) is true if ....
-start :- welcome.
+%start([]) is true if .... getting error and I dont know why :) 
+start([]) :- welcome.
 
 %welcome is true if welcome message is written to the terminal
 %example list to use while running program (copy & paste): [course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpscs,320), course(biol,361), course(pysc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]. 
@@ -58,38 +58,34 @@ validateList([course(X,Y)|T]) :-
 	welcome.
 
 %askQuestion(List) is true if ....
+askQuestion(List) :-
+	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'),
+	write("Ask me anything: "), 
+	read(Question), % not sure about syntax here! TODO 
+	ask(Question, _),
 
-
-
-% main program loop. L are courses taken
-go(L) :-
-	write('Ask me: '), flush_output(current_output),
-	readln(Q),
-	write('Add courses taken? y/n '),
-	read(X),nl,
-	((X == 'yes';X == 'y') -> addCourses(LN),append(L,LN,Courses);
-		Courses = L),
-	question(Q,End,Ans,Courses),
-    member(End,[[],['?'],['.']]),
-	writeln(Ans),
-	fail.
-	
-	
-% Queries users for new courses
-addCourses([X|L]) :-
-	writeln('Type courses taken in the form course(dept,123), or done if no more courses'),
-	read(X),
-	dif(X,done),
-	addCourses(L).
-	addCourses([]).	
 
 	
-
-
-
-
-
 % NATURAL LANGUAGE PARSER
+
+
+% question(Question,QR,Object) is true if Query provides an answer about Object to Question
+question(['Is' | T0],T2,Obj,St) :-
+    noun_phrase(T0,T1,Obj,St),
+    mp(T1,T2,Obj,St).
+question(['What',is | T0], T1, Obj,St) :-
+    mp(T0,T1,Obj,St).
+question(['What',is | T0],T1,Obj,St) :-
+    noun_phrase(T0,T1,Obj,St).
+question(['What' | T0],T2,Obj,St) :-
+    noun_phrase(T0,T1,Obj,St),
+    mp(T1,T2,Obj,St).
+
+% ask(Q,A) gives answer A to question Q. Is true if A is the answer to question Q. 
+ask(Q,A,St) :-
+    question(Q,[],A,St).
+
+
 % States
 % A noun phrase is a determiner followed by adjectives followed
 % by a noun followed by an optional modifying phrase:
@@ -147,28 +143,5 @@ noun([course, i, have, taken | T], T, Obj, St) :- member(Obj, St).
 reln([required, for | T], T, Obj, Course,_) :- requires(Course, Obj).
 reln([requires | T], T, Obj, Course,_) :- requires(Course, Obj).
 
-% question(Question,QR,Object) is true if Query provides an answer about Object to Question
-question(['Is' | T0],T2,Obj,St) :-
-    noun_phrase(T0,T1,Obj,St),
-    mp(T1,T2,Obj,St).
-question(['What',is | T0], T1, Obj,St) :-
-    mp(T0,T1,Obj,St).
-question(['What',is | T0],T1,Obj,St) :-
-    noun_phrase(T0,T1,Obj,St).
-question(['What' | T0],T2,Obj,St) :-
-    noun_phrase(T0,T1,Obj,St),
-    mp(T1,T2,Obj,St).
 
-% ask(Q,A) gives answer A to question Q
-ask(Q,A,St) :-
-    question(Q,[],A,St).
 	
-% To get the input from a line:
-
-q(Ans,St) :-
-    write('Ask me: '), flush_output(current_output),
-	readln(Ln),
-    question(Ln,End,Ans,St),
-    member(End,[[],['?'],['.']]),
-	writeln(Ans),
-	flush_output.
