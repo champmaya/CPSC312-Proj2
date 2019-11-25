@@ -1,4 +1,5 @@
-:- include("coursedict.pl").
+%:- include("coursedict.pl").
+:- include("coursefunctions.pl").
 
 
 % Original code from Abel Waller and Gareth Antle. Their code found here: https://github.com/unoctium1/COGS-Module-Recommender. We have added information about other courses in the cpsc cogs degree. Not just modules.
@@ -39,18 +40,26 @@ start :- welcome.
 %welcome is true if welcome message is written to the terminal
 %example list to use while running program (copy & paste): [course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpscs,320), course(biol,361), course(pysc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]. 
 welcome :- 
-	write ('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree! ... ADD MORE DETAILS LATER ')
+	write ('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree! ... ADD MORE DETAILS LATER '),
 	nl,
-	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses')
+	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses'),
 	Read(ListOfCoursesTaken),
-	validateList(ListOfCoursesTaken).
+	validateList(ListOfCoursesTaken),
+	askQuestions(ListOfCoursesTaken), 
 
 %Question: Alex, do you think we even need this type of function
-%validateList(List) is true if List is a list of valid courses taken, based on the knowledge base in the course dict
+%validateList(List) is true if List is a list of valid courses taken is not valid, based on the knowledge base in the course dict
 validateList([]). 
 validateList([course(X,Y)]).
-validateList([H|T]) :- validateList(H), validateList(T). 
-	
+validateList([H|T]) :- validateList(H), validateList(T).
+validateList([course(X,Y)|T]) :- 
+	\+ course(X,Y)
+	write(course(X,Y)), write('Is not a valid course name, please renter the courses you have taken'),
+	welcome.
+
+%askQuestion(List) is true if ....
+
+
 
 % main program loop. L are courses taken
 go(L) :-
@@ -73,80 +82,6 @@ addCourses([X|L]) :-
 	dif(X,done),
 	addCourses(L).
 	addCourses([]).	
-
-% faculty(course(A,B),C) is true if course(A,B) is in faculty C
-faculty(course(anth, _),arts).
-faculty(course(asia, _),arts).
-faculty(course(econ, _),arts).
-faculty(course(engl, _),arts).
-faculty(course(ling, _),arts).
-faculty(course(phil, _),arts).
-faculty(course(psyc, _),arts).
-faculty(course(biol, _),science).
-faculty(course(caps, _),science).
-faculty(course(cogs, _),science).
-faculty(course(cpsc, _),science).
-faculty(course(math, _),science).
-faculty(course(stat, _),science).
-faculty(course(mech, _),appliedscience).
-faculty(course(eece, _),appliedscience).
-faculty(course(elec, _),appliedscience).
-faculty(course(X,_),X) :- 
-	dif(X,Y),
-	\+ faculty(course(X,_),Y).
-
-%noReqs(X) is true if X has no prerequisites.
-noReqs(X) :- \+ requires(X,_).
-	
-% Equivalent courses: hasTaken(X) is true if an equivalent course has been taken	TODO: figure out how to get this to work both ways
-isEquiv(X,Y) :- \+ dif(X,Y).
-
-% coursesToTake(X,C,L) is true if C are pre reqs needed for X that haven't been taken. CoursesToTake(X,_) is false if isEligible(X) is true.
-
-coursesToTake(X,C,L) :- length(C,_),coursesToTake2(X,C,L).
-
-coursesToTake2(X,C,L) :-
-	requires(X,Y),
-	subtract(Y,L,C0),
-	append(C0,C1,C),
-	coursesToTakeRec(C0,C1,L).
-coursesToTake2(X,[],L) :-
-	isEligible(X,L).
-
-coursesToTake1(X,C,L) :-
-	requires(X,Y),
-	subtract(Y,L,C).
-
-coursesToTakeRec([H|T],C,L) :-
-		coursesToTake2(H,C0,L),
-		append(C0,C1,C),
-		coursesToTakeRec(T,C1,L).
-coursesToTakeRec([H|T],C,L) :-
-		isEligible(H,L),
-		coursesToTakeRec(T,C,L).
-coursesToTakeRec([],[],_).
-	
-% isEligible(X,L) is true if the user has taken all required courses.
-isEligible(X,L) :-
-	(requires(X,Y);isEquiv(X,Z),requires(Z,Y)),
-	foreach(member(H,Y),(hasTaken(H,L); isEquiv(H,I),hasTaken(I,L))).
-isEligible(X,_) :-
-	noReqs(X).
-hasTaken(C,L) :- member(C,L).
-
-% filterFaculty(Fac,L,L2) is true if L2 is the elements of L for which they are in faculty Fac
-filterFaculty(Fac,[H|T],[H|T1]) :-
-	faculty(H,Fac),
-	filterFaculty(Fac,T,T1).
-filterFaculty(Fac,[H|T],[H1|T1]) :-
-	 \+ faculty(H,Fac),
-	 dif(H,H1),
-	 filterFaculty(Fac,T,[H1|T1]).
-filterFaculty(Fac,[H|T],[]) :-
-	\+ faculty(H,Fac),
-	filterFaculty(Fac,T,[]).
-filterFaculty(_,[],[]).
-
 
 	
 
