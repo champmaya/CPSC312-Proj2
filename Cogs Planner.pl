@@ -1,10 +1,9 @@
 :- include("coursedict.pl").
 
-%% Look, I have a made a change!!!! 
 
-% Original code from Abel Waller and Gareth Antle. We have added information about other courses in the cpsc cogs degree. Not just modules.
+% Original code from Abel Waller and Gareth Antle. Their code found here: https://github.com/unoctium1/COGS-Module-Recommender. We have added information about other courses in the cpsc cogs degree. Not just modules.
 % Furthermore we have improved the natural language capacity of the program so that more questions can be asked in more natural-sounding English.
-% :- module(cogsmodules,[course/2,faculty/2,isModule/1,requires/2,newUser/0,go/1,isEquiv/2]).
+% :- module(cogsmodules,[course/2,faculty/2,isModule/1,requires/2,newUser/0,go/1,isEquiv/2]). - Devyani and Alex 
 
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
@@ -12,12 +11,13 @@
 % to use try:
 %	go([]).
 
-% A system for recommending Cogs Module courses, based on what courses a student has already taken.
+% This a program that helps cogs students in the computer science stream plan their degree. It includes answers to queries about the degree itself, the number of credits required etc. 
+% It requires the user to enter a list of courses already taken
 % The user makes a query, and the program uses inputted information in additon to the existing knowledge 
 % base in order to answer the question.
 
 % our system distinguishes between eligible courses (where the user meets all the prerequisites), and 
-% possible courses (where the user meets some of the prerequisites)
+% possible courses (where the user meets some of the prerequisites) <- not sure about this yet - Dev
 
 % try asking:
 %	Is course cpsc 320?
@@ -31,6 +31,48 @@
 % once you've found some courses you're interested in taking (say, phil 451), try asking
 % 	What is required for course phil 451?
 
+
+% useful for reading and writing: http://alumni.cs.ucr.edu/~vladimir/cs171/prolog_2.pdf
+%start([]) is true if ....
+start :- welcome.
+
+%welcome is true if welcome message is written to the terminal
+%example list to use while running program (copy & paste): [course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpscs,320), course(biol,361), course(pysc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]. 
+welcome :- 
+	write ('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree! ... ADD MORE DETAILS LATER ')
+	nl,
+	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses')
+	Read(ListOfCoursesTaken),
+	validateList(ListOfCoursesTaken).
+
+%Question: Alex, do you think we even need this type of function
+%validateList(List) is true if List is a list of valid courses taken, based on the knowledge base in the course dict
+validateList([]). 
+validateList([course(X,Y)]).
+validateList([H|T]) :- validateList(H), validateList(T). 
+	
+
+% main program loop. L are courses taken
+go(L) :-
+	write('Ask me: '), flush_output(current_output),
+	readln(Q),
+	write('Add courses taken? y/n '),
+	read(X),nl,
+	((X == 'yes';X == 'y') -> addCourses(LN),append(L,LN,Courses);
+		Courses = L),
+	question(Q,End,Ans,Courses),
+    member(End,[[],['?'],['.']]),
+	writeln(Ans),
+	fail.
+	
+	
+% Queries users for new courses
+addCourses([X|L]) :-
+	writeln('Type courses taken in the form course(dept,123), or done if no more courses'),
+	read(X),
+	dif(X,done),
+	addCourses(L).
+	addCourses([]).	
 
 % faculty(course(A,B),C) is true if course(A,B) is in faculty C
 faculty(course(anth, _),arts).
@@ -105,30 +147,10 @@ filterFaculty(Fac,[H|T],[]) :-
 	filterFaculty(Fac,T,[]).
 filterFaculty(_,[],[]).
 
-% run newUser. to start a new command
-newUser :- go([]).
 
-% main program loop. L are courses taken
-go(L) :-
-	write('Ask me: '), flush_output(current_output),
-	readln(Q),
-	write('Add courses taken? y/n '),
-	read(X),nl,
-	((X == 'yes';X == 'y') -> addCourses(LN),append(L,LN,Courses);
-		Courses = L),
-	question(Q,End,Ans,Courses),
-    member(End,[[],['?'],['.']]),
-	writeln(Ans),
-	fail.
 	
 
-% Queries users for new courses
-addCourses([X|L]) :-
-	writeln('Type courses taken in the form course(dept,123), or done if no more courses'),
-	read(X),
-	dif(X,done),
-	addCourses(L).
-addCourses([]).	
+
 
 
 
