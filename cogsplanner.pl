@@ -1,16 +1,7 @@
-%:- include("coursedict.pl").
-:- include("coursefunctions.pl").
-
-%unsure if we actually need these:
-:- use_module(library(aggregate)).
-:- use_module(library(apply)).
-
- :- module(cogsmodules,[course/2,faculty/2,isModule/1,requires/2,newUser/0,go/1,isEquiv/2, start/1, welcome/1]). 
 
 
 % Original code from Abel Waller and Gareth Antle. Their code found here: https://github.com/unoctium1/COGS-Module-Recommender. We have added information about other courses in the cpsc cogs degree. Not just modules.
 % Furthermore we have improved the natural language capacity of the program so that more questions can be asked in more natural-sounding English.
-
 
 
 % This a program that helps cogs students in the computer science stream plan their degree. It includes answers to queries about the degree itself, the number of credits required etc. 
@@ -23,33 +14,50 @@
 
 
 
+%:- include("coursedict.pl").
+:- include("coursefunctions.pl").
+
+%unsure if we actually need these:
+:- use_module(library(aggregate)).
+:- use_module(library(apply)).
+
+% The dynamic declaration prevents undefined predicate errors.
+:- dynamic start/0, welcome/0. 
+
+:- discontiguous isEquiv/2. 
+
 
 % useful for reading and writing: http://alumni.cs.ucr.edu/~vladimir/cs171/prolog_2.pdf
-%start(Deg) is true if .... getting error and I dont know why :) 
-start(Deg) :- welcome(Deg).
+%start() is true if .... getting error and I dont know why :) 
+start :- welcome.
 
 %welcome is true if welcome message is written to the terminal
 %example list to use while running program (copy & paste): [course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpscs,320), course(biol,361), course(pysc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]. 
-welcome(Deg) :- 
-	write ('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree! ... ADD MORE DETAILS LATER '),
+welcome :- 
+	write('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree! ... ADD MORE DETAILS LATER '),
 	nl,
-	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses'),
-	Read(ListOfCoursesTaken),
+	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses'), nl,
+	readln(ListOfCoursesTaken),
 	validateList(ListOfCoursesTaken),
 	askQuestions(ListOfCoursesTaken).
 
 %Question: Alex, do you think we even need this type of function
-%validateList(List) is true if List is a list of valid courses taken is not valid, based on the knowledge base in the course dict
+%validateList(List) is true if List is a list of valid courses taken is not valid, based on the
+ knowledge base in the course dict
+ %test case 
 validateList([]). 
 validateList([course(X,Y)]).
 validateList([H|T]) :- validateList(H), validateList(T).
 validateList([course(X,Y)|T]) :- 
 	\+ course(X,Y)
-	write(course(X,Y)), write('Is not a valid course name, please renter the courses you have taken'),
-	welcome.
+	write(X),
+	nl, 
+	write('Is not a valid course name, please renter the courses you have taken'),
+	nl,
+	welcome(Deg).
 
 %askQuestion(List) is true if ....
-askQuestions(List) :-
+askQuestions(Q, Ans, List) :-
 	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'),
     write("Ask me: "), flush_output(current_output),
     readln(Ln),
