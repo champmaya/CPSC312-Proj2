@@ -38,8 +38,7 @@ welcome :-
 	nl,
 	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses'), nl,
 	readln(ListOfCoursesTaken),
-	validateList(ListOfCoursesTaken),
-	askQuestions(ListOfCoursesTaken).
+	askQuestions(ListOfCoursesTaken), nl, nl.
 
 %Question: Alex, do you think we even need this type of function
 %validateList(List) is true if List is a list of valid courses taken is not valid, based on the
@@ -47,23 +46,24 @@ welcome :-
 % test case: validateList([]). -> should produce true
 % test case: validateList([course(cpsc,110)]). -> should produce true
 % test case: validateList([course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpsc,320), course(biol,361), course(psyc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]).
- 
+% test case: validateList([course(cpsc,110), course(cpsc,121)]).
 validateList([]). 
 validateList([course(Dept, Num)]).
+validateList([H|T]) :- validateList(H), validateList(T).
 validateList([course(X,Y)|T]) :- 
 	\+ course(X,Y),
-	write(X),
+	write(X), write(Y), 
 	nl, 
 	write('Is not a valid course name, please renter the courses you have taken'),
-	nl,
-	welcome(Deg).
-validateList([H|T]) :- validateList(H), validateList(T).
+	nl.
+	%welcome(Deg).
+
 
 %askQuestion(List) is true if ....
-askQuestions(Q, Ans, List) :-
-	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'),
-    write("Ask me: "), flush_output(current_output),
-    readln(Ln),
+askQuestions(List) :-
+	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'), nl, nl, 
+    write("Ask me: "), flush_output(current_output), nl,
+    readln(Ln), nl, 
     ask(Ln,Ans,List).
 
 
