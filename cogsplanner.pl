@@ -67,9 +67,8 @@ askQuestions(List) :-
     ask(Ln,Ans,List).
 
 
-
-% ask(Q,A) gives answer A to question Q, based on the List of courses of given
-ask(Q,A, ListOfCourses) :-
+% ask(Q,A, ListOfCourses) gives answer A to question Q, based on the List of courses of given
+ask(Q,A,ListOfCourses) :-
 	   question(Q,[],A,ListOfCourses).
    
 	
@@ -133,11 +132,12 @@ mp(L,L,_).
 % adj(L0,L1,Entity) is true if L0-L1 
 % is an adjective that is true of Entity
 
-adj([module | L], L, Enitity):- isModule(Entity).
+%adj([module | L], L, Enitity):- isModule(Entity).
 adj([core | L], L, Enitity):- core(Entity).
 
 noun([credits | L], L, Entity):- credits(Entity, N).
 % Do we really need a 'degree' noun? noun([degree | L], L, Entity):-
+noun([module, course | L], L, course(X, Y)).
 noun([course | L], L, course(X, Y)).
 noun([courses | L], L, course(X, Y)). %not sure about this one.
 noun([pre-requisites | L], L, Entity):- (isEligible(Entity, X)).
