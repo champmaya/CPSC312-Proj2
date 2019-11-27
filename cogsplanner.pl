@@ -28,7 +28,7 @@
 
 
 % useful for reading and writing: http://alumni.cs.ucr.edu/~vladimir/cs171/prolog_2.pdf
-%start() is true if .... getting error and I dont know why :) 
+%start() 
 start :- welcome.
 
 %welcome is true if welcome message is written to the terminal
