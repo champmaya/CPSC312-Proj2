@@ -32,7 +32,7 @@
 start :- welcome.
 
 %welcome is true if welcome message is written to the terminal
-%example list to use while running program (copy & paste): [course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpscs,320), course(biol,361), course(pysc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]. 
+%example list to use while running program (copy & paste): [course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpsc,320), course(biol,361), course(psyc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]. 
 welcome :- 
 	write('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree! ... ADD MORE DETAILS LATER '),
 	nl,
@@ -44,17 +44,20 @@ welcome :-
 %Question: Alex, do you think we even need this type of function
 %validateList(List) is true if List is a list of valid courses taken is not valid, based on the
  knowledge base in the course dict
- %test case 
+% test case: validateList([]). -> should produce true
+% test case: validateList([course(cpsc,110)]). -> should produce true
+% test case: validateList([course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpsc,320), course(biol,361), course(psyc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]).
+ 
 validateList([]). 
-validateList([course(X,Y)]).
-validateList([H|T]) :- validateList(H), validateList(T).
+validateList([course(Dept, Num)]).
 validateList([course(X,Y)|T]) :- 
-	\+ course(X,Y)
+	\+ course(X,Y),
 	write(X),
 	nl, 
 	write('Is not a valid course name, please renter the courses you have taken'),
 	nl,
 	welcome(Deg).
+validateList([H|T]) :- validateList(H), validateList(T).
 
 %askQuestion(List) is true if ....
 askQuestions(Q, Ans, List) :-
