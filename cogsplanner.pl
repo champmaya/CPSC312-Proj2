@@ -5,10 +5,12 @@
 :- use_module(library(aggregate)).
 :- use_module(library(apply)).
 
+ :- module(cogsmodules,[course/2,faculty/2,isModule/1,requires/2,newUser/0,go/1,isEquiv/2, start/1, welcome/1]). 
+
 
 % Original code from Abel Waller and Gareth Antle. Their code found here: https://github.com/unoctium1/COGS-Module-Recommender. We have added information about other courses in the cpsc cogs degree. Not just modules.
 % Furthermore we have improved the natural language capacity of the program so that more questions can be asked in more natural-sounding English.
-% :- module(cogsmodules,[course/2,faculty/2,isModule/1,requires/2,newUser/0,go/1,isEquiv/2]). <-????? TODO 
+
 
 
 % This a program that helps cogs students in the computer science stream plan their degree. It includes answers to queries about the degree itself, the number of credits required etc. 
@@ -19,33 +21,22 @@
 % our system distinguishes between eligible courses (where the user meets all the prerequisites), and 
 % possible courses (where the user meets some of the prerequisites) <- not sure about this yet - Dev
 
-% to begin enter:
-%?- start.
-%	Is course cpsc 320?
-%	Is course cpsc 123?
-%	What is a module course?
-%	
-% after entering some courses, try asking
-%	What are my possible courses?
-%	What are my eligible courses?
-%
-% once you've found some courses you're interested in taking (say, phil 451), try asking
-% 	What is required for course phil 451?
+
 
 
 % useful for reading and writing: http://alumni.cs.ucr.edu/~vladimir/cs171/prolog_2.pdf
-%start([]) is true if .... getting error and I dont know why :) 
-start([]) :- welcome.
+%start(Deg) is true if .... getting error and I dont know why :) 
+start(Deg) :- welcome(Deg).
 
 %welcome is true if welcome message is written to the terminal
 %example list to use while running program (copy & paste): [course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpscs,320), course(biol,361), course(pysc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]. 
-welcome :- 
+welcome(Deg) :- 
 	write ('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree! ... ADD MORE DETAILS LATER '),
 	nl,
 	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses'),
 	Read(ListOfCoursesTaken),
 	validateList(ListOfCoursesTaken),
-	askQuestions(ListOfCoursesTaken), 
+	askQuestions(ListOfCoursesTaken).
 
 %Question: Alex, do you think we even need this type of function
 %validateList(List) is true if List is a list of valid courses taken is not valid, based on the knowledge base in the course dict
@@ -58,20 +49,36 @@ validateList([course(X,Y)|T]) :-
 	welcome.
 
 %askQuestion(List) is true if ....
-askQuestion(List) :-
+askQuestions(List) :-
 	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'),
-	write("Ask me anything: "), 
-	read(Question), % not sure about syntax here! TODO 
-	ask(Question, _),
-
-q(Ans) :-
     write("Ask me: "), flush_output(current_output),
     readln(Ln),
-    ask(Ln,Ans).
+    ask(Ln,Ans,List).
 
 
+
+% ask(Q,A) gives answer A to question Q, based on the List of courses of given
+ask(Q,A, ListOfCourses) :-
+	   question(Q,[],A,ListOfCourses).
+   
 	
 % NATURAL LANGUAGE PARSER
+
+
+
+% question(Question,QR,Entity,ListOfCourses) is true if Query provides an answer about Entity to Question, given %the list of courses
+question(['What',are | L0], L1, Entity) :-
+    mp(L0,L1,Entity).
+question(['What',are | L0],L1,Entity) :-
+    noun_phrase(L0,L1,Entity).
+question(['What' | L0],L2,Entity) :-
+    noun_phrase(L0,L1,Entity),
+    mp(L1,L2,Entity).
+question(['How',many | L0],L2,Entity) :-
+    noun_phrase(L0,L1,Entity).
+question(['How',many | L0],L2,Entity) :-
+    noun_phrase(L0,L1,Entity),
+    mp(L1,L2,Entity).
 
 % noun_phrase(L0,L4,Entity) is true if
 %  L0 and L4 are list of words, such that
@@ -127,20 +134,4 @@ noun([faculty | L], L, Entity):- course(Entity, _).
 
 reln([requirments| L],L,course(X,Y),course(A,B)) :- requires(course(X,Y),course(A,B)).
 
-% question(Question,QR,Entity) is true if Query provides an answer about Entity to Question
-question(['What',are | L0], L1, Entity) :-
-    mp(L0,L1,Entity).
-question(['What',are | L0],L1,Entity) :-
-    noun_phrase(L0,L1,Entity).
-question(['What' | L0],L2,Entity) :-
-    noun_phrase(L0,L1,Entity),
-    mp(L1,L2,Entity).
-question(['How',many | L0],L2,Entity) :-
-    noun_phrase(L0,L1,Entity).
-question(['How',many | L0],L2,Entity) :-
-    noun_phrase(L0,L1,Entity),
-    mp(L1,L2,Entity).
 
-% ask(Q,A) gives answer A to question Q
-ask(Q,A) :-
-    question(Q,[],A).
