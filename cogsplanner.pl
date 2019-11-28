@@ -35,9 +35,10 @@ start :- welcome.
 welcome :- 
 	write('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree! ... ADD MORE DETAILS LATER '),
 	nl,
-	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses'), nl,
+	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses.'), flush_output(current_output), nl,
 	readln(ListOfCoursesTaken),
-	askQuestions(ListOfCoursesTaken), nl, nl.
+	askQuestions(ListOfCoursesTaken), nl, 
+	nl.
 
 %Question: Alex, do you think we even need this type of function
 %validateList(List) is true if List is a list of valid courses taken is not valid, based on the
@@ -63,8 +64,8 @@ askQuestions(List) :-
 	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'), nl, nl, 
     write("Ask me: "), flush_output(current_output), nl,
     readln(Ln), nl, 
-    ask(Ln,Ans,List)
-	write('The answer is: '), nl,
+    ask(Ln,Ans,List),
+	write("The answer is: "), nl,
 	write(Ans). 
 
 
