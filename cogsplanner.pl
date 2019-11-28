@@ -66,12 +66,66 @@ askQuestions(List) :-
     readln(Ln), nl, 
     ask(Ln,Ans,List).
 
-
+/*
 % ask(Q,A, ListOfCourses) gives answer A to question Q, based on the List of courses of given
 ask(Q,A,ListOfCourses) :-
 	   question(Q,[],A,ListOfCourses).
-   
+*/
+	   
+	   
+% DEVS NATURAL LANGUAGE PARSER:
+
+q(Ans) :-
+    write("Ask me: "), flush_output(current_output),
+    readln(Ln),
+    ask(Ln,Ans).
 	
+%ask(Q,A) gives answer A to question Q
+ask(Q,A) :-
+	get_constraints_from_question(Q,A,C),
+	prove_all(C).
+	
+	
+% get_constraints_from_question(Q,A,C) is true if C is the constaints on A to infer question Q
+get_constraints_from_question(Q,A,C) :-
+	question(Q,End,A,C,),
+	member(End,[[],['?'],['.']]).
+	
+	
+question(['How', many, credits, is, X, Y) :-
+	credits(course(X,Y), Z).
+	
+	
+	
+	
+	
+	
+	
+% prove_all(L) is true if all elements of L can be proved from the knowledge base
+prove_all([]).
+prove_all([H|T]) :-
+	call(H),      % built-in Prolog predicate calls an atom
+	prove_all(T).
+
+
+   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+   
+/*	
 % NATURAL LANGUAGE PARSER
 
 
@@ -144,5 +198,7 @@ noun([pre-requisites | L], L, Entity):- (isEligible(Entity, X)).
 noun([faculty | L], L, Entity):- course(Entity, _).
 
 reln([requirments| L],L,course(X,Y),course(A,B)) :- requires(course(X,Y),course(A,B)).
+
+*/
 
 
