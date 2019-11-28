@@ -13,7 +13,6 @@
 % possible courses (where the user meets some of the prerequisites) <- not sure about this yet - Dev
 
 
-
 %:- include("coursedict.pl").
 :- include("coursefunctions.pl").
 
@@ -48,15 +47,15 @@ welcome :-
 % test case: validateList([course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpsc,320), course(biol,361), course(psyc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]).
 % test case: validateList([course(cpsc,110), course(cpsc,121)]).
 validateList([]). 
-validateList([course(Dept, Num)]).
+validateList([course(Dept, Num)]) :- course(Dept, Num).
 validateList([H|T]) :- validateList(H), validateList(T).
-validateList([course(X,Y)|T]) :- 
+validateList([course(X,Y)|_]) :- 
 	\+ course(X,Y),
 	write(X), write(Y), 
 	nl, 
 	write('Is not a valid course name, please renter the courses you have taken'),
 	nl.
-	%welcome(Deg).
+	welcome().
 
 
 %askQuestion(List) is true if ....
@@ -64,70 +63,17 @@ askQuestions(List) :-
 	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'), nl, nl, 
     write("Ask me: "), flush_output(current_output), nl,
     readln(Ln), nl, 
-    ask(Ln,Ans,List).
+    ask(Ln,Ans,List)
+	write('The answer is: '), nl,
+	write(Ans). 
 
-/*
+
 % ask(Q,A, ListOfCourses) gives answer A to question Q, based on the List of courses of given
 ask(Q,A,ListOfCourses) :-
-	   question(Q,[],A,ListOfCourses).
-*/
-	   
-	   
-% DEVS NATURAL LANGUAGE PARSER:
-
-q(Ans) :-
-    write("Ask me: "), flush_output(current_output),
-    readln(Ln),
-    ask(Ln,Ans).
-	
-%ask(Q,A) gives answer A to question Q
-ask(Q,A) :-
-	get_constraints_from_question(Q,A,C),
-	prove_all(C).
-	
-	
-% get_constraints_from_question(Q,A,C) is true if C is the constaints on A to infer question Q
-get_constraints_from_question(Q,A,C) :-
-	question(Q,End,A,C,),
-	member(End,[[],['?'],['.']]).
-	
-	
-question(['How', many, credits, is, X, Y) :-
-	credits(course(X,Y), Z).
-	
-	
-	
-	
-	
-	
-	
-% prove_all(L) is true if all elements of L can be proved from the knowledge base
-prove_all([]).
-prove_all([H|T]) :-
-	call(H),      % built-in Prolog predicate calls an atom
-	prove_all(T).
+	   question(Q,A,ListOfCourses).
 
 
-   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-   
-/*	
 % NATURAL LANGUAGE PARSER
-
 
 
 % question(Question,QR,Entity,ListOfCourses) is true if Query provides an answer about Entity to Question, given %the list of courses
@@ -198,7 +144,5 @@ noun([pre-requisites | L], L, Entity):- (isEligible(Entity, X)).
 noun([faculty | L], L, Entity):- course(Entity, _).
 
 reln([requirments| L],L,course(X,Y),course(A,B)) :- requires(course(X,Y),course(A,B)).
-
-*/
 
 
