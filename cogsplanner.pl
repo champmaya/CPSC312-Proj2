@@ -38,47 +38,92 @@ welcome :-
 	nl,
 	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses'), nl,
 	readln(ListOfCoursesTaken),
-	askQuestions(ListOfCoursesTaken), nl, nl.
+	validateList(ListOfcoursesTaken), 
+	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'),
+	nl, 
+    write('Ask me: '), nl,
+	readln(Question),
+	ask(Question,Ans,ListOfcoursesTaken),
+	write('The answer is: '), nl, 
+	write(Ans), nl, nl.
+%	askQuestions(ListOfCoursesTaken), nl, nl,
+%	.
 
 %Question: Alex, do you think we even need this type of function
 %validateList(List) is true if List is a list of valid courses taken is not valid, based on the
- knowledge base in the course dict
+% knowledge base in the course dict
 % test case: validateList([]). -> should produce true
 % test case: validateList([course(cpsc,110)]). -> should produce true
 % test case: validateList([course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpsc,320), course(biol,361), course(psyc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]).
 % test case: validateList([course(cpsc,110), course(cpsc,121)]).
-validateList([]). 
-validateList([course(Dept, Num)]).
+validateList([]).
+validateList([course(Dept, Num)]) :- course(Dept,Num).
 validateList([H|T]) :- validateList(H), validateList(T).
-validateList([course(X,Y)|T]) :- 
+validateList([course(X,Y)|_]) :- 
 	\+ course(X,Y),
 	write(X), write(Y), 
 	nl, 
 	write('Is not a valid course name, please renter the courses you have taken'),
 	nl.
-	%welcome(Deg).
+	welcome.
 
 
 %askQuestion(List) is true if ....
 askQuestions(List) :-
-	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'), nl, nl, 
-    write("Ask me: "), flush_output(current_output), nl,
-    readln(Ln), nl, 
-    ask(Ln,Ans,List).
+	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'),
+	nl, 
+    write("Ask me: "), nl,
+	readln(Question),
+	ask(Question,Ans,List),
+	write('The answer is: '), nl, 
+	write(Ans).
 
-/*
+
 % ask(Q,A, ListOfCourses) gives answer A to question Q, based on the List of courses of given
 ask(Q,A,ListOfCourses) :-
-	   question(Q,[],A,ListOfCourses).
-*/
+	   question(Q,A,ListOfCourses).
 	   
+
+question(['How', many | RestOfQ], Ans, ListOfCourses) :-
+	 noun_phrase(RestOfQ, NounOne, VerbPhrase),
+	 verb_phrase(VerbPhrase, Verb, NounTwo),
+	 reln(NounOne, NounTwo, Ans).
+	 	
+		
+noun_phrase([Noun | Rest], Noun, Verbphrase) :-
+	noun(Noun).
+	
+verb_phrase([Verb | Rest], Verb, NounTwo) :-
+	verb(Verb),
+	noun_phrase(NounTwo, NounTwo, []). 
+		
+
+verb('is'). 		
+		
+noun(credits). 
+noun(['course', X, Y]) :- course(X,Y). 
+reln(credits, course(X,Y), Ans) :- credits(course(X,Y), Ans). 
+
+	
+/*
+	
+	
+	 
+	 
+% prove_all(L) is true if all elements of L can be proved from the knowledge base
+prove_all([]).
+prove_all([H|T]) :-
+	call(H),      % built-in Prolog predicate calls an atom
+	prove_all(T).
+  
+   
 	   
 % DEVS NATURAL LANGUAGE PARSER:
 
 q(Ans) :-
-    write("Ask me: "), flush_output(current_output),
-    readln(Ln),
-    ask(Ln,Ans).
+	write("Ask me: "), flush_output(current_output),
+	readln(Ln),
+	ask(Ln,Ans).
 	
 %ask(Q,A) gives answer A to question Q
 ask(Q,A) :-
@@ -92,42 +137,13 @@ get_constraints_from_question(Q,A,C) :-
 	member(End,[[],['?'],['.']]).
 	
 	
-question(['How', many, credits, is, X, Y) :-
-	credits(course(X,Y), Z).
+	*/
 	
-	
-	
-	
-	
-	
-	
-% prove_all(L) is true if all elements of L can be proved from the knowledge base
-prove_all([]).
-prove_all([H|T]) :-
-	call(H),      % built-in Prolog predicate calls an atom
-	prove_all(T).
+ 
+  
+/*  
 
-
-   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-   
-/*	
 % NATURAL LANGUAGE PARSER
-
 
 
 % question(Question,QR,Entity,ListOfCourses) is true if Query provides an answer about Entity to Question, given %the list of courses
@@ -197,8 +213,13 @@ noun([courses | L], L, course(X, Y)). %not sure about this one.
 noun([pre-requisites | L], L, Entity):- (isEligible(Entity, X)).
 noun([faculty | L], L, Entity):- course(Entity, _).
 
-reln([requirments| L],L,course(X,Y),course(A,B)) :- requires(course(X,Y),course(A,B)).
+
+
 
 */
+
+
+
+	
 
 
