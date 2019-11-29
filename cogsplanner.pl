@@ -74,8 +74,7 @@ askQuestions(List) :-
 ask(Q,A,ListOfCourses) :-
 	   question(Q,A).
 	   
-	 
-
+	
 
 % NATURAL LANGUAGE PARSER
 
