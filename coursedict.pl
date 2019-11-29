@@ -487,6 +487,7 @@ core(course(cpsc, 322)). %new
 core(course(phil, 326)). %new
 core(course(psyc, 365)). %new
 
+
 % year(X, Y) is true when X is a course and Y is the year in which course X should be taken for the cogs degree. Only core courses will be given a year.
 year(course(cpsc, 110), 1).
 year(course(cpsc, 121), 1).
@@ -515,6 +516,9 @@ year(course(phil, 326), 3).
 year(course(phil, 326), 4).
 year(course(psyc, 365), 3).
 year(course(psyc, 365), 4).
+year(1, 0). 
+course(mine, 100).
+core(1).  
 
 
 % requires(X,Y) is true if course X requires courses Y
@@ -585,15 +589,15 @@ requires(course(cpsc,425),[course(math,200),course(math,221),course(cpsc,221)]).
 requires(course(cpsc,425),[course(math,200),course(math,221),course(cpsc,360),course(eece,320)]).
 
 % also 3rd year standing, prolly just shouldn't bother with that tho
-requires(course(cpsc,430),[course(cpsc,X)]) :-
-	course(cpsc,X).
+%requires(course(cpsc,430),[course(cpsc,X)]) :-
+%	course(cpsc,X).
 
 requires(course(cpsc,444),[course(cpsc,310),course(cpsc,344),course(stat,200)]).
 requires(course(cpsc,444),[course(cpsc,310),course(cpsc,344),course(stat,241)]).
-requires(course(cpsc,445),[course(cpsc,320),course(biol,X),course(biol,Y)]) :-
-	course(biol,X),
-	course(biol,Y),
-	dif(X,Y).
+%requires(course(cpsc,445),[course(cpsc,320),course(biol,X),course(biol,Y)]) :-
+%	course(biol,X),
+%	course(biol,Y),
+%	dif(X,Y).
 requires(course(ling,300),[course(ling,201)]).
 requires(course(ling,311),[course(ling,200)]).
 requires(course(ling,313),[course(ling,200)]).

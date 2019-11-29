@@ -64,17 +64,20 @@ validateList([course(X,Y)|_]) :-
 askQuestions(List) :-
 	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'), nl, nl, 
     write("Ask me: "), flush_output(current_output), nl,
+	%write([course(cpsc,110), course(cpsc,121)]),
     readln(Ln), nl, 
-    ask(Ln,Ans,List),
+    ask(Ln,Ans),
 	write("The answer is: "), nl,
 	write(Ans). 
 
 
-% ask(Q,A, ListOfCourses) gives answer A to question Q, based on the List of courses of given
-ask(Q,A,ListOfCourses) :-
+% ask(Q,A) gives answer A to question Q, based on the List of courses of given
+ask(Q,A) :-
 	   question(Q,A).
 	   
-% What courses am i eligible for with current course list [course(cpsc,110), course(cpsc,121)]? 	
+% What courses am i eligible for with current course list [course(cpsc,110)]?	
+% What are the core courses in year 0?
+% How many credits is course phil 220?
 
 % NATURAL LANGUAGE PARSER
 
@@ -82,7 +85,7 @@ ask(Q,A,ListOfCourses) :-
 % question(Question,QR,Entity) is true if Query provides an answer about Entity to Question, given %the list of courses
 question(['How',many,credits,is,course,X,Y,?], Ans) :- credits(course(X,Y), Ans).
 question(['Tell'|L], "Go to calendar.ubc.ca/vancouver/index.cfm?tree=12,215,410,421 to learn more information.").
-question(['What',are,the,core,courses,in,year,X,?], Ans). :- core(Ans), year(Ans, X).
+question(['What',are,the,core,courses,in,year,X,?], Ans). :- core(Ans), year(Ans, X).  
 question(['What',are,the,basic,requirements|L], 
     "Overall, 120 credits are required, 12 credits worth of module courses, 
     3 of which must be a 400-level CPSC module course, and 9 of which must be non-CPSC module courses at the 300 level or above. 
@@ -90,6 +93,7 @@ question(['What',are,the,basic,requirements|L],
 question(['What',faculty,is,course,X,Y,in,?], Ans) :- faculty(course(X,Y), Ans).
 question(['What',are,the,pre-requisites,for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans).
 question(['What',courses,am,i,eligible,for,with,current,course,list,L,?], Ans) :- findEligibleCourses(L,Ans).
+
 question(['What',are | L0], L1, Entity) :-
     mp(L0,L1,Entity).
 question(['What',are | L0],L1,Entity) :-
