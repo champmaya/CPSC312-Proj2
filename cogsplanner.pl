@@ -82,6 +82,15 @@ ask(Q,A,ListOfCourses) :-
 
 % question(Question,QR,Entity) is true if Query provides an answer about Entity to Question, given %the list of courses
 question(['How',many,credits,is,course,X,Y,?], Ans) :- credits(course(X,Y), Ans).
+question(['Tell'|L], "Go to calendar.ubc.ca/vancouver/index.cfm?tree=12,215,410,421 to learn more information.").
+question(['What',are,the,core,courses,in,year,X,?], Ans). :- core(Ans), year(Ans, X).
+question(['What',are,the,basic,requirements|L], 
+    "Overall, 120 credits are required, 12 credits worth of module courses, 
+    3 of which must be a 400-level CPSC module course, and 9 of which must be non-CPSC module courses at the 300 level or above. 
+    All core courses must be completed before graduating.").
+question(['What',faculty,is,course,X,Y,in,?], Ans) :- faculty(course(X,Y), Ans).
+question(['What',are,the,pre-requisites,for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans).
+question(['What',courses,am,'I',eligible,for,whith,current,course,list,L], Ans) :- findEligibleCourses(L,Ans).
 question(['What',are | L0], L1, Entity) :-
     mp(L0,L1,Entity).
 question(['What',are | L0],L1,Entity) :-
