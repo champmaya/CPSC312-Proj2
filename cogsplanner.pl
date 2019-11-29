@@ -66,7 +66,7 @@ askQuestions(B) :-
     write("Ask me: "),nl, 
 	flush_output(current_output), 
     readln(Q),
-    ask(Q,Ans),
+    ask(B,Ans),
 	write("The answer is: "),
 	write(Ans). 
 
