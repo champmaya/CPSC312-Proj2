@@ -38,6 +38,7 @@ welcome :-
 	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses.'), flush_output(current_output), nl,
 	readln(ListOfCoursesTaken),
 	askQuestions(ListOfCoursesTaken), nl, 
+	write("Finished asking questions: " ), 
 	nl.
 
 %Question: Alex, do you think we even need this type of function
