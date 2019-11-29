@@ -38,7 +38,7 @@ welcome :-
 	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses.'), flush_output(current_output), nl,
 	readln(ListOfCoursesTaken),
 	askQuestions(ListOfCoursesTaken), nl, 
-	write("Finished asking questions: " ), 
+	write("Finished asking questions. " ), 
 	nl.
 
 %Question: Alex, do you think we even need this type of function
@@ -74,7 +74,7 @@ askQuestions(List) :-
 ask(Q,A,ListOfCourses) :-
 	   question(Q,A).
 	   
-	
+% What courses am i eligible for with current course list [course(cpsc,110), course(cpsc,121)]? 	
 
 % NATURAL LANGUAGE PARSER
 
@@ -89,7 +89,7 @@ question(['What',are,the,basic,requirements|L],
     All core courses must be completed before graduating.").
 question(['What',faculty,is,course,X,Y,in,?], Ans) :- faculty(course(X,Y), Ans).
 question(['What',are,the,pre-requisites,for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans).
-question(['What',courses,am,'I',eligible,for,whith,current,course,list,L], Ans) :- findEligibleCourses(L,Ans).
+question(['What',courses,am,i,eligible,for,with,current,course,list,L,?], Ans) :- findEligibleCourses(L,Ans).
 question(['What',are | L0], L1, Entity) :-
     mp(L0,L1,Entity).
 question(['What',are | L0],L1,Entity) :-

@@ -85,9 +85,11 @@ totalNumberOfCredits([course(Name, Number)| T], S) :-
 	totalNumberOfCredits(T, ST),
 	S is Credits+ST.
 % findEligibleCourses(L,Ans) is true when Ans is a list of all the courses for which everything in L is a prerequisite.
-findEligibleCourses(_, []).
-findEligibleCourses([H|T], [H1 | T1]) :- requires(H1, H), findEligibleCourses(T, T1).
+
+findEligibleCourses([H1], [H2]) :- requires(H2, [H1]). 
+findEligibleCourses([H|T], [H1 | T1]) :- requires(H1, [H]), findEligibleCourses(T, T1).
 findEligibleCourses([H|T], [H1|T1]) :- findEligibleCourses(T, [H1|T1]).
+%findEligibleCourses(_, []).
 
 
 
