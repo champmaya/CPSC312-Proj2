@@ -17,8 +17,8 @@
 :- include("coursefunctions.pl").
 
 %unsure if we actually need these:
-:- use_module(library(aggregate)).
-:- use_module(library(apply)).
+%:- use_module(library(aggregate)).
+%:- use_module(library(apply)).
 
 % The dynamic declaration prevents undefined predicate errors.
 :- dynamic start/0, welcome/0. 
@@ -37,7 +37,7 @@ welcome :-
 	nl,
 	%write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses.'), flush_output(current_output), nl,
 	%readln(ListOfCoursesTaken),
-	askQuestions, nl, 
+	askQuestions([]), nl, 
 	write("Finished asking questions. " ), 
 	nl.
 
@@ -61,15 +61,14 @@ validateList([course(X,Y)|_]) :-
 
 
 %askQuestion() is true if ....
-askQuestions :-
+askQuestions(B) :-
 	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'), nl, nl, 
-    write("Ask me: "), flush_output(current_output), nl,
-	%write([course(cpsc,110), course(cpsc,121)]),
-    readln(Ln), nl, 
-    ask(Ln,Ans),
-	question(Ln, A),
-	write("The answer is: "), nl,
-	write(A). 
+    write("Ask me: "),nl, 
+	flush_output(current_output), 
+    readln(Q),
+    ask(Q,Ans),
+	write("The answer is: "),
+	write(Ans). 
 
 
 % ask(Q,A) gives answer A to question Q, based on the List of courses of given
@@ -77,9 +76,12 @@ ask(Q,A) :-
 	   question(Q,A).
 	   
 % What courses am i eligible for with current course list [course(cpsc,110)]?	
+% What courses am i eligible for with current course list [course(lower-year,101)]?
 % What are the core courses in year 3?
 % How many credits is course phil 220?
 % What are the pre-requisites for course cpsc 210? 
+% question(['What',courses,am,i,eligible,for,with,current,course,list,[course(cpsc,110)],?], Ans).
+% askQuestions(['What',courses,am,i,eligible,for,with,current,course,list,[course(cpsc,110)],?]). 
 
 % NATURAL LANGUAGE PARSER
 
@@ -87,13 +89,14 @@ ask(Q,A) :-
 % question(Question,QR,Entity) is true if Query provides an answer about Entity to Question, given %the list of courses
 question(['How',many,credits,is,course,X,Y,?], Ans) :- credits(course(X,Y), Ans).
 question(['Tell'|L], "Go to calendar.ubc.ca/vancouver/index.cfm?tree=12,215,410,421 to learn more information.").
-question(['What',are,the,core,courses,in,year,X,?], Ans) :- core(Ans), year(Ans, X).  
+question(['What',are,the,core,courses,in,year,X,?], Ans) :- core(Ans), year(Ans, X). 
+question(['Why',?] [course(cpsc,110)]).  
 question(['What',are,the,basic,requirements|L], 
     "Overall, 120 credits are required, 12 credits worth of module courses, 
     3 of which must be a 400-level CPSC module course, and 9 of which must be non-CPSC module courses at the 300 level or above. 
     All core courses must be completed before graduating.").
 question(['What',faculty,is,course,X,Y,in,?], Ans) :- faculty(course(X,Y), Ans).
-question(['What',are,the,pre-requisites,for,course,X,Y,?], "hello") :- dif(X,Y).  %write("hello"). %requires(course(X,Y), Ans), write(Ans). 
+question(['What', 'are','the','pre-requisites',for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans). 
 question(['What',courses,am,i,eligible,for,with,current,course,list,L,?], Ans) :- findEligibleCourses(L,Ans).
 
 /*
