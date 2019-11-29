@@ -516,9 +516,7 @@ year(course(phil, 326), 3).
 year(course(phil, 326), 4).
 year(course(psyc, 365), 3).
 year(course(psyc, 365), 4).
-year(1, 0). 
-course(mine, 100).
-core(1).  
+  
 
 
 % requires(X,Y) is true if course X requires courses Y

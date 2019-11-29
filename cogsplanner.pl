@@ -43,7 +43,7 @@ welcome :-
 
 %Question: Alex, do you think we even need this type of function
 %validateList(List) is true if List is a list of valid courses taken is not valid, based on the
- knowledge base in the course dict
+ %knowledge base in the course dict
 % test case: validateList([]). -> should produce true
 % test case: validateList([course(cpsc,110)]). -> should produce true
 % test case: validateList([course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpsc,320), course(biol,361), course(psyc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]).
@@ -67,8 +67,9 @@ askQuestions(List) :-
 	%write([course(cpsc,110), course(cpsc,121)]),
     readln(Ln), nl, 
     ask(Ln,Ans),
+	question(Ln, A),
 	write("The answer is: "), nl,
-	write(Ans). 
+	write(A). 
 
 
 % ask(Q,A) gives answer A to question Q, based on the List of courses of given
@@ -76,8 +77,9 @@ ask(Q,A) :-
 	   question(Q,A).
 	   
 % What courses am i eligible for with current course list [course(cpsc,110)]?	
-% What are the core courses in year 0?
+% What are the core courses in year 3?
 % How many credits is course phil 220?
+% What are the pre-requisites for course cpsc 210? 
 
 % NATURAL LANGUAGE PARSER
 
@@ -85,15 +87,16 @@ ask(Q,A) :-
 % question(Question,QR,Entity) is true if Query provides an answer about Entity to Question, given %the list of courses
 question(['How',many,credits,is,course,X,Y,?], Ans) :- credits(course(X,Y), Ans).
 question(['Tell'|L], "Go to calendar.ubc.ca/vancouver/index.cfm?tree=12,215,410,421 to learn more information.").
-question(['What',are,the,core,courses,in,year,X,?], Ans). :- core(Ans), year(Ans, X).  
+question(['What',are,the,core,courses,in,year,X,?], Ans) :- core(Ans), year(Ans, X).  
 question(['What',are,the,basic,requirements|L], 
     "Overall, 120 credits are required, 12 credits worth of module courses, 
     3 of which must be a 400-level CPSC module course, and 9 of which must be non-CPSC module courses at the 300 level or above. 
     All core courses must be completed before graduating.").
 question(['What',faculty,is,course,X,Y,in,?], Ans) :- faculty(course(X,Y), Ans).
-question(['What',are,the,pre-requisites,for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans).
+question(['What',are,the,pre-requisites,for,course,X,Y,?], "hello") :- dif(X,Y).  %write("hello"). %requires(course(X,Y), Ans), write(Ans). 
 question(['What',courses,am,i,eligible,for,with,current,course,list,L,?], Ans) :- findEligibleCourses(L,Ans).
 
+/*
 question(['What',are | L0], L1, Entity) :-
     mp(L0,L1,Entity).
 question(['What',are | L0],L1,Entity) :-
@@ -106,6 +109,7 @@ question(['How',many | L0],L2,Entity) :-
 question(['How',many | L0],L2,Entity) :-
     noun_phrase(L0,L1,Entity),
     mp(L1,L2,Entity).
+	*/ 
 
 % noun_phrase(L0,L4,Entity) is true if
 %  L0 and L4 are list of words, such that
