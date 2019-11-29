@@ -72,8 +72,7 @@ askQuestions(List) :-
 
 % ask(Q,A, ListOfCourses) gives answer A to question Q, based on the List of courses of given
 ask(Q,A,ListOfCourses) :-
-	   question(Q,End,A),
-	   member(End,[[],['?'],['.']]).
+	   question(Q,A).
 	   
 	 
 
@@ -82,6 +81,7 @@ ask(Q,A,ListOfCourses) :-
 
 
 % question(Question,QR,Entity) is true if Query provides an answer about Entity to Question, given %the list of courses
+question(['How',many,credits,is,course,X,Y,?], Ans) :- credits(course(X,Y), Ans).
 question(['What',are | L0], L1, Entity) :-
     mp(L0,L1,Entity).
 question(['What',are | L0],L1,Entity) :-
