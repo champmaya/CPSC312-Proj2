@@ -35,8 +35,6 @@ start :- welcome.
 welcome :- 
 	write('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree! ... ADD MORE DETAILS LATER '),
 	nl,
-	%write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses.'), flush_output(current_output), nl,
-	%readln(ListOfCoursesTaken),
 	askQuestions([]), nl, 
 	write("Finished asking questions. " ), 
 	nl.
