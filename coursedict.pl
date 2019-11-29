@@ -518,10 +518,6 @@ year(course(psyc, 365), 3).
 year(course(psyc, 365), 4).
   
 
-course(lower-year,101).
-course(upper-year,201).
-requires(course(upper-year,201), [course(lower-year,101)]). 
-
 % requires(X,Y) is true if course X requires courses Y
 requires(course(cpsc, 210),[course(cpsc,110)]).
 requires(course(cpsc, 221), [course(cpsc,121), course(cpsc,210)]). 
