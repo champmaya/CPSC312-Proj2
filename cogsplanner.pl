@@ -72,18 +72,21 @@ askQuestions(List) :-
 
 % ask(Q,A, ListOfCourses) gives answer A to question Q, based on the List of courses of given
 ask(Q,A,ListOfCourses) :-
-	   question(Q,A,ListOfCourses).
+	   question(Q,End,A),
+	   member(End,[[],['?'],['.']]).
+	   
+	 
 
 
 % NATURAL LANGUAGE PARSER
 
 
-% question(Question,QR,Entity,ListOfCourses) is true if Query provides an answer about Entity to Question, given %the list of courses
+% question(Question,QR,Entity) is true if Query provides an answer about Entity to Question, given %the list of courses
 question(['What',are | L0], L1, Entity) :-
     mp(L0,L1,Entity).
 question(['What',are | L0],L1,Entity) :-
     noun_phrase(L0,L1,Entity).
-question(['What' | L0],L2,Entity) :-
+question(['What' | L0],End,L2,Entity) :-
     noun_phrase(L0,L1,Entity),
     mp(L1,L2,Entity).
 question(['How',many | L0],L2,Entity) :-
