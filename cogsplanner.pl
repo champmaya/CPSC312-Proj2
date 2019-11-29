@@ -35,9 +35,9 @@ start :- welcome.
 welcome :- 
 	write('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree! ... ADD MORE DETAILS LATER '),
 	nl,
-	write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses.'), flush_output(current_output), nl,
-	readln(ListOfCoursesTaken),
-	askQuestions(ListOfCoursesTaken), nl, 
+	%write('To begin, please list the courses you have already taken in the list format of course(dept, course#). For example if you have taken the courses PHIL 220 and CPSC 110, you would enter ?- [course(phil,220), course(cpsc,110)].  Please be careful when writing out all your courses.'), flush_output(current_output), nl,
+	%readln(ListOfCoursesTaken),
+	askQuestions, nl, 
 	write("Finished asking questions. " ), 
 	nl.
 
@@ -60,8 +60,8 @@ validateList([course(X,Y)|_]) :-
 	welcome().
 
 
-%askQuestion(List) is true if ....
-askQuestions(List) :-
+%askQuestion() is true if ....
+askQuestions :-
 	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'), nl, nl, 
     write("Ask me: "), flush_output(current_output), nl,
 	%write([course(cpsc,110), course(cpsc,121)]),
