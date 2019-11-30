@@ -27,7 +27,7 @@ faculty(course(X,_),X) :-
 %noReqs(X) is true if X has no prerequisites.
 noReqs(X) :- \+ requires(X,_).
 	
-	
+%	
 	
 % coursesToTake(X,C,L) is true if C are pre reqs needed for X that haven't been taken. CoursesToTake(X,_) is false if isEligible(X) is true.
 

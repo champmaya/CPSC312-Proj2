@@ -73,7 +73,7 @@ ask(Q,A) :-
 % What are the core courses in year 3? 
 % What are the basic requirements of the cogs degree?
 % What faculty is course phil 220 in?
-% What are the pre-requisites for course cpsc 210?
+% What are the pre-requisites for course cpsc 210? 
 % What are the pre-requisites for course psyc 304? 
 % What courses require course biol 200?
 % What courses require course psyc 101? 

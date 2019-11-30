@@ -5,7 +5,7 @@
 % Part of dictionary taken from the base knowledge base and dictionary created by Abel Waller and Gareth Antle. Their code can be found here:
 
 % credits(X, N) is true if N is the number of credits one gets from course X.
-
+%
 % core course credits
 credits(course(engl, 100), 3).
 credits(course(engl, 111), 3).
