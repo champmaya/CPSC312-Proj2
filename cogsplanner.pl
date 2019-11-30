@@ -100,7 +100,9 @@ question(['What',are,the,basic,requirements|L],
     All core courses must be completed before graduating.").
 question(['What',faculty,is,course,X,Y,in,?], Ans) :- faculty(course(X,Y), Ans).
 question(['What',are,the,pre,-,requisites,for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans). 
-question(['What',courses,am,i,eligible,for,with,current,course,list,L,?], L).  % :- findEligibleCourses(L,Ans). 
+question(['What',courses,require,course,X,Y,?], Ans).  :- coursesThatRequire(course(X,Y),Ans). 
+question(['What',courses,have,X,credits,in,faculty,Y,?], Ans) :- faculty(Ans,Y), credits(Ans, X).
+
 
 /*
 question(['What',are | L0], L1, Entity) :-

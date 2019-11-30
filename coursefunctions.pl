@@ -85,19 +85,22 @@ totalNumberOfCredits([course(Name, Number)| T], S) :-
 	totalNumberOfCredits(T, ST),
 	S is Credits+ST.
 % findEligibleCourses(L,Ans) is true when Ans is a list of all the courses for which everything in L is a prerequisite.
-<<<<<<< HEAD
-findEligibleCourses([H|T], [H1|T1]) :- requires(H1, [H]), findEligibleCourses(T, T1).
-findEligibleCourses([H|T], [H1|T1]) :- findEligibleCourses(T, [H1|T1]).
-findEligibleCourses([H], [H1]) :- requires(H1,[H]).
-=======
+%<<<<<<< HEAD
+%findEligibleCourses([H|T], [H1|T1]) :- requires(H1, [H]), findEligibleCourses(T, T1).
+%findEligibleCourses([H|T], [H1|T1]) :- findEligibleCourses(T, [H1|T1]).
+%findEligibleCourses([H], [H1]) :- requires(H1,[H]).
+%=======
 
-findEligibleCourses([H1], [H2]) :- requires(H2, [H1]). 
-findEligibleCourses([H|T], [H1 | T1]) :- requires(H1, [H]), findEligibleCourses(T, T1).
-findEligibleCourses([H|T], [H1|T1]) :- findEligibleCourses(T, [H1|T1]).
+%findEligibleCourses([H1], [H2]) :- requires(H2, [H1]). 
+%findEligibleCourses([H|T], [H1 | T1]) :- requires(H1, [H]), findEligibleCourses(T, T1).
+%findEligibleCourses([H|T], [H1|T1]) :- findEligibleCourses(T, [H1|T1]).
 %findEligibleCourses(_, []).
->>>>>>> 33142926fc688e5d0380db2c2ad5749b60c00d3c
+%>>>>>>> 33142926fc688e5d0380db2c2ad5749b60c00d3c
 
+%coursesThatRequire(C,L). is true when L is a list of courses which have C as one of their requirements.
+coursesThatRequire(C,[H|T]):- requires(X, R), elem(C, R), coursesThatRequire(C, T).
+coursesThatRequire(C, [H]):- requires(X, R), elem(C, R).
 
-
-
-
+elem(E, [E]).
+elem(E, [E|R]).
+elem(E, [H|R]) :- elem(E, R).
