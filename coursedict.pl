@@ -1,4 +1,5 @@
 % Dictionary of basic course information for use by the cogs planner.
+% Please note that the requires knowledge may be incomplete. 
 
 
 % Part of dictionary taken from the base knowledge base and dictionary created by Abel Waller and Gareth Antle. Their code can be found here:
@@ -525,213 +526,70 @@ requires(course(anth,417),[course(ling,200),course(anth,100)]).
 requires(course(audi,402),[Y]) :- member(Y,[course(psyc,367),course(psyc,368),course(ling,313),course(ling,314)]).
 requires(course(audi,403),[course(ling,200),course(ling,201),course(audi,402)]).
 requires(course(biol,361),[course(biol,200)]).
-requires(course(biol,455),[Y]) :- member(Y,[course(biol,361),course(biol,362),course(biol,364),course(caps,301),course(psyc,360)]).					
+requires(course(biol,455),[course(biol,361)]). 					
 requires(course(biol,459),[course(psyc,455)]).
-requires(course(cpsc,304),[course(cpsc,221),Y]) :- member(Y,[course(cpsc,210),course(eece,210),course(eece,309)]).
-requires(course(cpsc,304),[course(cpsc,260),course(eece,320),Y]) :- member(Y,[course(cpsc,210),course(eece,210),course(eece,309)]).
+requires(course(cpsc,304),[course(cpsc,221),course(cpsc,210)]). 
+requires(course(cpsc,304),[course(cpsc,260),course(eece,320),course(cpsc,210)]). 
 requires(course(cpsc,310),[course(cpsc,210)]).
 requires(course(cpsc,311),[course(cpsc,210)]).
-requires(course(cpsc,312),[Y]) :- member(Y,[course(cpsc,210),course(eece,210),course(eece,309),course(cpen,221)]).
+requires(course(cpsc,312),[course(cpsc,210)]). 
 requires(course(cpsc,313),[course(cpsc,213),course(cpsc,221)]).
-requires(course(cpsc,313),[course(cpsc,210),course(cpsc,213),cpurse(cpsc,260),course(eece,320)]).
-requires(course(cpsc,314),[course(cpsc,221),X,Y]) :- 
-	member(X,[course(math,200),course(math,253)]),
-	member(Y,[course(math,152),course(math,221),course(math,223)]).
-requires(course(cpsc,314),[course(cpsc,260),course(eece,320),X,Y]) :- 
-	member(X,[course(math,200),course(math,253)]),
-	member(Y,[course(math,152),course(math,221),course(math,223)]).
+requires(course(cpsc,314),[course(cpsc,221),course(math,200),course(math,221)]). 
 requires(course(cpsc,317),[course(cpsc,213),course(cpsc,221)]).
-requires(course(cpsc,317),[course(cpsc,213),course(cpsc,210),course(cpsc,260),course(eece,320)]).
 requires(course(cpsc,319),[course(cpsc,310)]).
-requires(course(cpsc,320),[course(cpsc,221),course(X,Y),course(A,B)]) :-
-	member(X,[stat,math]),
-	member(A,[stat,math]),
-	course(X,Y),
-	course(A,B),
-	dif(course(X,Y),course(A,B)),
-	number(Y),
-	number(B),
-	Y >= 200,
-	B >= 200.
-requires(course(cpsc,320),[course(cpsc,260),course(eece,320),course(X,Y),course(A,B)]) :-
-	member(X,[stat,math]),
-	member(A,[stat,math]),
-	course(X,Y),
-	course(A,B),
-	dif(course(X,Y),course(A,B)),
-	number(Y),
-	number(B),
-	Y >= 200,
-	B >= 200.
-requires(course(cpsc,322),[course(cpsc,221),Y]) :- member(Y,[course(cpsc,210),course(eece,210),course(eece,309)]).
-requires(course(cpsc,322),[course(cpsc,260),course(eece,320),Y]) :- member(Y,[course(cpsc,210),course(eece,210),course(eece,309)]).		
-requires(course(cpsc,340),[course(cpsc,221),X,Y]) :-
-	member(X,[course(math,152),course(math,221),course(math,223)]),
-	member(Y,[course(math,302),course(math,318),course(biol,300),course(stat,200),course(stat,203),course(stat,241),course(stat,251),course(stat,302)]).
-requires(course(cpsc,340),[course(cpsc,260),course(eece,320),X,Y,Z]) :-
-	member(X,[course(math,152),course(math,221),course(math,223)]),
-	member(Y,[course(math,302),course(math,318),course(biol,300),course(stat,200),course(stat,203),course(stat,241),course(stat,251),course(stat,302)]),
-	member(Z,[course(cpsc,210),course(eece,210),course(eece,309)]).
-requires(course(cpsc,344),[Y]) :- member(Y,[course(cpsc,213),course(eece,210),course(eece,309),course(cpen,221)]).
+requires(course(cpsc,320),[course(cpsc,221)]).
+requires(course(cpsc,322),[course(cpsc,221),course(cpsc,210)]). 
+requires(course(cpsc,340),[course(cpsc,260),course(eece,320),course(math,152),course(stat,200),(cpsc,210)]). 
+requires(course(cpsc,344),[course(cpsc,213)]). 
 requires(course(cpsc,404),[course(cpsc,304),course(cpsc,213)]).	
-requires(course(cpsc,404),[course(cpsc,304),course(cpsc,261)]).	
-requires(course(cpsc,404),[X,Y]) :-
-	member(X,[course(cpsc,313),course(eece,315),course(cpen,331)]),
-	member(Y,[course(cpsc,317),course(eece,358),course(elec,331)]).
 requires(course(cpsc,420),[course(cpsc,320)]).
 requires(course(cpsc,421),[course(cpsc,221)]).
-requires(course(cpsc,421),[course(cpsc,260),course(eece,320)]).
 requires(course(cpsc,422),[course(cpsc,312),course(cpsc,322)]).
 requires(course(cpsc,425),[course(math,200),course(math,221),course(cpsc,221)]).
-requires(course(cpsc,425),[course(math,200),course(math,221),course(cpsc,360),course(eece,320)]).
-
-% also 3rd year standing, prolly just shouldn't bother with that tho
-%requires(course(cpsc,430),[course(cpsc,X)]) :-
-%	course(cpsc,X).
-
 requires(course(cpsc,444),[course(cpsc,310),course(cpsc,344),course(stat,200)]).
-requires(course(cpsc,444),[course(cpsc,310),course(cpsc,344),course(stat,241)]).
-%requires(course(cpsc,445),[course(cpsc,320),course(biol,X),course(biol,Y)]) :-
-%	course(biol,X),
-%	course(biol,Y),
-%	dif(X,Y).
+requires(course(cpsc,445),[course(cpsc,320)]).
 requires(course(ling,300),[course(ling,201)]).
 requires(course(ling,311),[course(ling,200)]).
 requires(course(ling,313),[course(ling,200)]).
 requires(course(ling,314),[course(ling,313)]).
 requires(course(ling,319),[course(ling,200),course(ling,201)]).
 requires(course(ling,327),[course(ling,201)]).
-requires(course(ling,345),[Y]) :- member(Y,[course(ling,201),course(engl,331),course(phil,220)]).
+requires(course(ling,345),[course(ling,201)]). 
 requires(course(ling,405),[course(ling,300),course(ling,311)]).
 requires(course(ling,410),[course(ling,311)]).
 requires(course(ling,421),[course(ling,300)]).
-requires(course(ling,425),[course(ling,327)]).
-requires(course(ling,425),[course(phil,220)]).
+requires(course(ling,425),[course(ling,327), course(phil,220)]).
 requires(course(ling,431),[course(ling,300),course(ling,311)]).
 requires(course(ling,432),[course(ling,431)]).
 requires(course(ling,451),[course(ling,222),course(ling,311)]).
 requires(course(ling,452),[course(ling,222),course(ling,300)]).
-requires(course(math,302),[Y]) :- member(Y,[course(math,200),course(math,217),course(math,226),course(math,253),course(math,263)]).
-requires(course(math,303),[course(math,302)]).
-requires(course(math,303),[course(stat,302)]).
+requires(course(math,302),[course(math,200)]). 
+requires(course(math,303),[course(math,302), course(stat,302)]).
 requires(course(math,344),[course(math,223)]).
-requires(course(math,344),[X,Y]) :-
-	member(X,[course(math,152),course(math,221)]),
-	member(Y,[course(math,220),course(math,226),course(cpsc,121)]).
-requires(course(math,443),[X,course(math,Y),course(math,Z)]) :-
-	member(X,[course(math,220),course(math,226),course(cpsc,121)]),
-	course(math,Y),
-	course(math,Z),
-	dif(Y,Z),
-	number(Z),
-	Y >= 300,
-	Z >= 300.
+requires(course(math,443),[course(math,220)]).
 requires(course(mech,421),[course(mech,366),course(mech,420)]).
 requires(course(musc,320),[course(musc,319)]).
 requires(course(musc,415),[course(musc,201),course(musc,210)]).
 requires(course(phil,320),[course(phil,220)]).
 requires(course(phil,321),[course(phil,220)]).
-requires(course(phil,321),[course(phil,125)]).
 requires(course(phil,322),[course(phil,220)]).
 requires(course(phil,323),[course(phil,220)]).
-requires(course(phil,326),[course(phil,220),course(A,B),course(C,D)]) :-
-	member(A,[phil,ling]),
-	member(C,[phil,ling]),
-	course(A,B),
-	course(C,D),
-	dif(course(A,B),course(C,D)),
-	B >= 200,
-	D >= 200.
-requires(course(phil,326),[course(ling,201),course(A,B),course(C,D)]) :-
-	member(A,[phil,ling]),
-	member(C,[phil,ling]),
-	course(A,B),
-	course(C,D),
-	dif(course(A,B),course(C,D)),
-	B >= 200,
-	D >= 200.
-requires(course(phil,441),[course(phil,240)]).
-requires(course(phil,441),[course(cogs,200),course(phil,X)]) :-
-	course(phil,X),
-	X >= 200.
-requires(course(phil,450),[course(phil,X),course(phil,Y),course(phil,Z)]) :-
-	course(phil,X),
-	course(phil,Y),
-	course(phil,Z),
-	dif(X,Y),
-	dif(Y,Z),
-	dif(X,Z),
-	Y >= 200,
-	Z >= 200,
-	X >= 200.
-requires(course(phil,451),[course(cogs,200),course(phil,X)]) :-
-	course(phil,X),
-	X >= 200.
+requires(course(phil,326),[course(phil,220)]).
+requires(course(phil,441),[course(phil,240), course(cogs,200)]).
+requires(course(phil,450),[course(phil,220),course(cogs,200)]).
 requires(course(phil,451),[course(phil,240)]).
-requires(course(phil,455),[course(cogs,200),course(phil,X)]) :-
-	course(phil,X),
-	X >= 200.
-requires(course(phil,455),[course(phil,240)]).
-requires(course(psyc,304),[course(psyc,100)]).
-requires(course(psyc,304),[X,Y]) :-
-	dif(X,Y),
-	member(X,[course(psyc,101),course(psyc,102),course(psyc,205),course(psyc,207),course(psyc,208),course(psyc,216),course(psyc,217)]),
-	member(Y,[course(psyc,101),course(psyc,102),course(psyc,205),course(psyc,207),course(psyc,208),course(psyc,216),course(psyc,217)]).
-requires(course(psyc,309),[course(psyc,100)]).
-requires(course(psyc,309),[course(psyc,101),course(psyc,102)]).
-requires(course(psyc,309),[course(psyc,X),course(psyc,Y)]) :-
-	dif(X,Y),
-	course(psyc,X),
-	course(psyc,Y),
-	X >= 200,
-	Y >= 200.
+requires(course(phil,455),[course(cogs,200), course(phil,240)]).
+requires(course(psyc,304),[course(psyc,101), course(psyc,102), course(psyc,100)]).
+requires(course(psyc,309),[course(psyc,101),course(psyc,102), course(psyc,100)]).
 requires(course(psyc,321),[course(psyc,100)]).
-requires(course(psyc,321),[X,Y]) :-
-	dif(X,Y),
-	member(X,[course(psyc,101),course(psyc,102),course(psyc,205),course(psyc,207),course(psyc,208),course(psyc,216),course(psyc,217)]),
-	member(Y,[course(psyc,101),course(psyc,102),course(psyc,205),course(psyc,207),course(psyc,208),course(psyc,216),course(psyc,217)]).
-requires(course(psyc,333),[course(psyc,100)]).
-requires(course(psyc,333),[course(psyc,101),course(psyc,102)]).
-requires(course(psyc,333),[course(psyc,X),course(psyc,Y)]) :-
-	dif(X,Y),
-	course(psyc,X),
-	course(psyc,Y),
-	X >= 200,
-	Y >= 200.	
-requires(course(psyc,336),[course(psyc,100)]).
-requires(course(psyc,336),[course(psyc,101),course(psyc,102)]).
-requires(course(psyc,336),[course(engl,329)]).	 
-requires(course(psyc,336),[course(ling,420)]).
-requires(course(psyc,336),[course(ling,200),course(ling,201)]).
-requires(course(psyc,359),[course(psyc,366)]).
+requires(course(psyc,333),[course(psyc,101),course(psyc,102), course(psyc,100)]).
+requires(course(psyc,336),[course(psyc,101),course(psyc,102), course(psyc,100)]).
 requires(course(psyc,359),[course(psyc,217),course(psyc,218)]).
 requires(course(psyc,366),[course(psyc,260)]).	
-requires(course(psyc,367),[course(psyc,100)]).
-requires(course(psyc,367),[course(psyc,101),course(psyc,102)]).
-requires(course(psyc,367),[course(psyc,X),course(psyc,Y)]) :-
-	dif(X,Y),
-	course(psyc,X),
-	course(psyc,Y),
-	X >= 200,
-	Y >= 200.	
+requires(course(psyc,367),[course(psyc,101),course(psyc,102), course(psyc,100)]).	
 requires(course(psyc,368),[course(psyc,367)]).
-requires(course(psyc,370),[X,Y,Z]) :-
-	member(X,[course(psyc,260),course(psyc,270)]),
-	member(Y,[course(psyc,217),course(psyc,277)]),
-	member(Z,[course(psyc,218),course(psyc,278)]).
 requires(course(psyc,371),[course(psyc,370)]).
-requires(course(psyc,460),[X]) :-
-	member(X,[course(psyc,304),course(psyc,360)]).
-requires(course(psyc,461),[X]) :-
-	member(X,[course(psyc,304),course(psyc,360),course(psyc,460)]).
-requires(course(psyc,462),[X]) :-
-	member(X,[course(psyc,304),course(psyc,360)]).
-requires(course(stat,302),X) :- requires(course(math,302),X).
-requires(course(stat,306),[X,course(math,302),Z]) :-
-	member(X,[course(math,152),course(math,221),course(math,223)]),
-	member(Z,[course(stat,200),course(stat,241),course(stat,251),course(stat,300),course(biol,300),course(comm,291),course(econ,325),course(econ,327),course(frst,231),course(psyc,218),course(psyc,278),course(psyc,366)]).
-requires(course(stat,344),[X,course(math,302)]) :-
-	member(X,[course(stat,200),course(stat,241),course(stat,251),course(stat,300),course(biol,300),course(comm,291),course(econ,325),course(econ,327),course(frst,231),course(psyc,218),course(psyc,278),course(psyc,366)]).
+requires(course(psyc,460),[course(psyc,304), course(psyc,360)]). 
 requires(course(stat,406),[course(math,306)]).
 requires(course(stat,406),[course(cpsc,340)]).
 
@@ -764,6 +622,13 @@ isEquiv(course(phil, 326), course(phil, 351)). %new
 
 % Equivalent courses: hasTaken(X) is true if an equivalent course has been taken	TODO: figure out how to get this to work both ways
 isEquiv(X,Y) :- \+ dif(X,Y).
+
+ 
+dif(course(_,Y), course(_,Y1)) :- Y < Y1.
+dif(course(_,Y), course(_,Y1)) :- Y > Y1.
+
+
+
 
 
 

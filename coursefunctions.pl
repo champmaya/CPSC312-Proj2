@@ -27,7 +27,6 @@ faculty(course(X,_),X) :-
 noReqs(X) :- \+ requires(X,_).
 	
 
-
 % coursesToTake(X,C,L) is true if C are pre reqs needed for X that haven't been taken. CoursesToTake(X,_) is false if isEligible(X) is true.
 
 coursesToTake(X,C,L) :- length(C,_),coursesToTake2(X,C,L).
@@ -96,19 +95,27 @@ totalNumberOfCredits([course(Name, Number)| T], S) :-
 %findEligibleCourses(_, []).
 %>>>>>>> 33142926fc688e5d0380db2c2ad5749b60c00d3c
 
-%coursesThatRequire(C,L). is true when L is a list of courses which have C as one of their requirements.
-%coursesThatRequire(C,L):- requires(X, R), elem(C, R), coursesThatRequire(C, [X|L]), elem(X, L).
+%coursesThatRequire(C,Ans,[H|T]), is true when Ans is a course that requires C as a pre-requisite. 
+
+coursesThatRequire(C, _, [H|T]) :-
+	   requires(X,R),
+	   elem(C,R),
+	   coursesThatRequire(C,[X,H|T],[]).
+
+coursesThatRequire(C,[X|_],[]):- requires(X, R), elem(C, R).
+
+
+%coursesThatRequire(C,[C|_]). 
+%coursesThatRequire(C,[X|_]) :- requires(X,R), elem(C,R).  
 %coursesThatRequire(C, L):- requires(X, R), elem(C, R), elem(X,L).
-coursesThatRequire(C,[L]) :- requires(X,R), elem(C,R), coursesThatRequire(C, [X|L]), dif(X,C).  
-coursesThatRequire(C,[H|_]) :- requires(H,X), elem(C,X). 
+%coursesThatRequire(C,[L]) :- requires(X,R), elem(C,R), coursesThatRequire(C, [X|L]), dif(X,C).  
+%coursesThatRequire(C,[H|_]) :- requires(H,X), elem(C,X). 
  
 
 elem(E, [E]).
 elem(E, [E|_]).
 elem(E, [_|R]) :- elem(E, R).
-
-
-dif(course(X,Y), course(X1,Y1)) :- dif(Y,Y1). 
+ 
 
 
 

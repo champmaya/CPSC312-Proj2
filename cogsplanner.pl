@@ -1,11 +1,11 @@
 
 
-% Original code from Abel Waller and Gareth Antle. Their code found here: https://github.com/unoctium1/COGS-Module-Recommender. We have added information about other courses in the cpsc cogs degree. Not just modules. Also added question parser with better syntax and grammar. 
+% Project based on work from Abel Waller and Gareth Antle. Their code found here: https://github.com/unoctium1/COGS-Module-Recommender. We have added information about other courses in the cpsc cogs degree. Not just modules. Updated the knowledge base. Added maany predicates. 
 % Furthermore we have improved the natural language capacity of the program so that more questions can be asked in more natural-sounding English.
-
-
+% Devyani McLaren % Alexander Mountain
+s
 % This a program that helps cogs students in the computer science stream plan their degree. It includes answers to queries about the degree itself, the number of credits required etc. 
-% The user makes a query, and the program uses inputted information in additon to the existing knowledge 
+% The user makes a query, and the program uses the existing knowledge 
 % base in order to answer the question.
 
 % our system distinguishes between eligible courses (where the user meets all the prerequisites), and 
@@ -14,21 +14,15 @@
 %:- include("coursedict.pl").
 :- include("coursefunctions.pl").
 
-
 % The dynamic declaration prevents undefined predicate errors.
 :- dynamic start/0, welcome/0. 
 
 :- discontiguous isEquiv/2. 
 
 
-start :- welcome.
-
-
-
-
-
 % ******************************************************MAIN PROGRAM************************************************
 
+start :- welcome.
 
 %welcome is true if welcome message is written to the terminal
 %example list to use while running program (copy & paste): [course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpsc,320), course(biol,361), course(psyc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]. 
@@ -42,24 +36,23 @@ welcome :-
 
 %askQuestion is true if the user asks a question and is provided an answer. 
 askQuestions :-
+	nl, nl,
 	write('Ask some questions below. If you are unsure what to ask, check out the README on github (https://github.com/champmaya/CPSC312-Proj2) for some inspiration!'), nl, nl, 
     write("Ask me: "),nl, 
 	flush_output(current_output), 
 	readln(Q),
-	write(Q), %this line for debugging purposes
+	%write(Q), nl, %this line for debugging purposes
     ask(Q,Ans),
 	write("The answer is: "),
 	write(Ans). 
+	%askQuestions.  -> this helps with looping through questions, but it wont allow the system to provide all the answers. 
 
 % ask(Q,A) gives answer A to question Q, based on the List of courses of given
 ask(Q,A) :-
 	   question(Q,A).
-	   
-	  
+	     
 	  
 % ******************************************************POTENTIAL QUERIES & QUESTIONS************************************************
-
-
 
 % isEquiv(course(math, 100), X).
 % totalNumberOfCredits([course(cpsc,110), course(cpsc,121)], X).
@@ -70,18 +63,23 @@ ask(Q,A) :-
 % question(['What',faculty,is,course,biol,200,in,?], Ans).
 % question(['What',are,the,pre,-,requisites,for,course,cpsc,210,?], Ans).
 % question(['What',courses,require,course,cpsc,110,?], Ans).
+% question(['What',courses,require,course,biol,200,?], Ans).
+% question(['What',courses,require,course,psyc,101,?], Ans).
+% question(['What',courses,require,course,phil,220,?], Ans).
 % question(['What',courses,have,3,credits,in,faculty,arts,?], Ans). 
+% question(['What',courses,have,4,credits,in,faculty,science,?], Ans).
 % How many credits is course cpsc 312?
 % Tell me more about the cogs degree
 % What are the core courses in year 3? 
 % What are the basic requirements of the cogs degree?
 % What faculty is course phil 220 in?
 % What are the pre-requisites for course cpsc 210?
+% What are the pre-requisites for course psyc 304? 
 % What courses require course biol 200?
-% What courses have 4 credits in faculty cpsc? 
+% What courses require course psyc 101? 
+% What courses have 4 credits in faculty science? 
 
 
- 	
 %% ******************************************************NATURAL LANGUAGE PARSER************************************************
 
 
@@ -96,8 +94,11 @@ question(['What',are,the,basic,requirements|_],
     All core courses must be completed before graduating.").
 question(['What',faculty,is,course,X,Y,in,?], Ans) :- faculty(course(X,Y), Ans).
 question(['What',are,the,pre,-,requisites,for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans). 
-question(['What',courses,require,course,X,Y,?], Ans)  :- coursesThatRequire(course(X,Y),Ans). 
+question(['What',courses,require,course,X,Y,?], Ans)  :- coursesThatRequire(course(X,Y), Ans, []). 
+
 question(['What',courses,have,X,credits,in,faculty,Y,?], Ans) :- faculty(Ans,Y), credits(Ans, X).
+
+
 
 
 /*
