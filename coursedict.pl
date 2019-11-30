@@ -517,7 +517,7 @@ year(course(phil, 326), 4).
 year(course(psyc, 365), 3).
 year(course(psyc, 365), 4).
   
-
+%
 % requires(X,Y) is true if course X requires courses Y
 requires(course(cpsc, 210),[course(cpsc,110)]).
 requires(course(cpsc, 221), [course(cpsc,121), course(cpsc,210)]). 
@@ -761,6 +761,9 @@ isEquiv(course(phil, 326), course(phil, 351)). %new
 isEquiv(course(phil, 326), course(phil, 441)). %new
 isEquiv(course(phil, 326), course(phil, 451)). %new
 isEquiv(course(phil, 326), course(phil, 351)). %new
+
+% Equivalent courses: hasTaken(X) is true if an equivalent course has been taken	TODO: figure out how to get this to work both ways
+isEquiv(X,Y) :- \+ dif(X,Y).
 
 
 

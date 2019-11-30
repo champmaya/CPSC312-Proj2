@@ -1,24 +1,19 @@
 
 
-% Original code from Abel Waller and Gareth Antle. Their code found here: https://github.com/unoctium1/COGS-Module-Recommender. We have added information about other courses in the cpsc cogs degree. Not just modules.
+% Original code from Abel Waller and Gareth Antle. Their code found here: https://github.com/unoctium1/COGS-Module-Recommender. We have added information about other courses in the cpsc cogs degree. Not just modules. Also added question parser with better syntax and grammar. 
 % Furthermore we have improved the natural language capacity of the program so that more questions can be asked in more natural-sounding English.
 
 
 % This a program that helps cogs students in the computer science stream plan their degree. It includes answers to queries about the degree itself, the number of credits required etc. 
-% It requires the user to enter a list of courses already taken
 % The user makes a query, and the program uses inputted information in additon to the existing knowledge 
 % base in order to answer the question.
 
 % our system distinguishes between eligible courses (where the user meets all the prerequisites), and 
-% possible courses (where the user meets some of the prerequisites) <- not sure about this yet - Dev
-
+% possible courses (where the user meets some of the prerequisites)s
 
 %:- include("coursedict.pl").
 :- include("coursefunctions.pl").
 
-%unsure if we actually need these:
-%:- use_module(library(aggregate)).
-%:- use_module(library(apply)).
 
 % The dynamic declaration prevents undefined predicate errors.
 :- dynamic start/0, welcome/0. 
@@ -26,82 +21,86 @@
 :- discontiguous isEquiv/2. 
 
 
-% useful for reading and writing: http://alumni.cs.ucr.edu/~vladimir/cs171/prolog_2.pdf
-%start() 
 start :- welcome.
+
+
+
+
+
+% ******************************************************MAIN PROGRAM************************************************
+
 
 %welcome is true if welcome message is written to the terminal
 %example list to use while running program (copy & paste): [course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpsc,320), course(biol,361), course(psyc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]. 
 welcome :- 
-	write('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree! ... ADD MORE DETAILS LATER '),
+	write('Welcome to the COGS - COMP SCI Degree Planner! This program allows you to ask many questions about the COGS degree so you can better plan for your graduation. Follow the instructions to begin planning your degree!'),
 	nl,
-	askQuestions([]), nl, 
+	askQuestions, nl, 
 	write("Finished asking questions. " ), 
 	nl.
 
-%Question: Alex, do you think we even need this type of function
-%validateList(List) is true if List is a list of valid courses taken is not valid, based on the
- %knowledge base in the course dict
-% test case: validateList([]). -> should produce true
-% test case: validateList([course(cpsc,110)]). -> should produce true
-% test case: validateList([course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpsc,320), course(biol,361), course(psyc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]).
-% test case: validateList([course(cpsc,110), course(cpsc,121)]).
-validateList([]). 
-validateList([course(Dept, Num)]) :- course(Dept, Num).
-validateList([H|T]) :- validateList(H), validateList(T).
-validateList([course(X,Y)|_]) :- 
-	\+ course(X,Y),
-	write(X), write(Y), 
-	nl, 
-	write('Is not a valid course name, please renter the courses you have taken'),
-	nl.
-	welcome().
 
-
-%askQuestion() is true if ....
-askQuestions(B) :-
-	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'), nl, nl, 
+%askQuestion is true if the user asks a question and is provided an answer. 
+askQuestions :-
+	write('Ask some questions below. If you are unsure what to ask, check out the README on github (https://github.com/champmaya/CPSC312-Proj2) for some inspiration!'), nl, nl, 
     write("Ask me: "),nl, 
 	flush_output(current_output), 
-    %readln(Q, _,_,[93,91,40,41,44,48,49],_),
 	readln(Q),
-	write(Q),
+	%write(Q), this line for debugging purposes
     ask(Q,Ans),
 	write("The answer is: "),
 	write(Ans). 
-
 
 % ask(Q,A) gives answer A to question Q, based on the List of courses of given
 ask(Q,A) :-
 	   question(Q,A).
 	   
-% What courses am i eligible for with current course list [course(cpsc,110)]?   phil 220?      [course(cpsc,110)]?	
-% What courses am i eligible for with current course list [course(lower-year,101)]?
-% What are the core courses in year 3?
-% How many credits is course phil 220?
+	  
+	  
+% ******************************************************POTENTIAL QUERIES & QUESTIONS************************************************
+
+
+
+% isEquiv(course(math, 100), X).
+% totalNumberOfCredits([course(cpsc,110), course(cpsc,121)], X).
+% question(['How',many,credits,is,course,cpsc,110,?], Ans).
+% question(['Tell',me,more,about,the,cogs,degree], Ans).
+% question(['What',are,the,core,courses,in,year,3,?], Ans).
+% question(['What',are,the,basic,requirements,of,the,cogs,degree], Ans). 
+% question(['What',faculty,is,course,biol,200,in,?], Ans).
+% question(['What',are,the,pre,-,requisites,for,course,cpsc,210,?], Ans).
+% question(['What',courses,require,course,cpsc,110,?], Ans).
+% question(['What',courses,have,3,credits,in,faculty,arts,?], Ans). 
+% How many credits is course cpsc 312?
+% Tell me more about the cogs degree
+% What are the core courses in year 3? 
+% What are the basic requirements of the cogs degree?
 % What faculty is course phil 220 in?
-% What are the pre-requisites for course cpsc 210? 
-% question(['What', are,the,pre-requisites,for,course,cpsc,210,?], Ans). %:- requires(course(X,Y), Ans). 
-% question(['What',courses,am,i,eligible,for,with,current,course,list,cpsc,110,phil,220
-% askQuestions(['What', are,the,pre-requisites,for,course,cpsc,210,?]). 
-% askQuestions(['What',courses,am,i,eligible,for,with,current,course,list,[course(cpsc,110)],?]). 
-
-% NATURAL LANGUAGE PARSER
+% What are the pre-requisites for course cpsc 210?
+% What courses require course biol 200?
+% What courses have 4 credits in faculty cpsc? 
 
 
-% question(Question,QR,Entity) is true if Query provides an answer about Entity to Question, given %the list of courses
+ 	
+%% ******************************************************NATURAL LANGUAGE PARSER************************************************
+
+
+% question(Question,Ans) is true if Query provides an answer (Ans) the the question (Question)
 question(['How',many,credits,is,course,X,Y,?], Ans) :- credits(course(X,Y), Ans).
-question(['Tell'|L], "Go to calendar.ubc.ca/vancouver/index.cfm?tree=12,215,410,421 to learn more information.").
+question(['Tell'|_], "Go to calendar.ubc.ca/vancouver/index.cfm?tree=12,215,410,421 to learn more information.").
 question(['What',are,the,core,courses,in,year,X,?], Ans) :- core(Ans), year(Ans, X). 
-question(['Why',?], [course(cpsc,110)]).  
-question(['What',are,the,basic,requirements|L], 
+%question(['Why',?], [course(cpsc,110)]). This line was used for debugging purposess
+question(['What',are,the,basic,requirements|_], 
     "Overall, 120 credits are required, 12 credits worth of module courses, 
     3 of which must be a 400-level CPSC module course, and 9 of which must be non-CPSC module courses at the 300 level or above. 
     All core courses must be completed before graduating.").
 question(['What',faculty,is,course,X,Y,in,?], Ans) :- faculty(course(X,Y), Ans).
 question(['What',are,the,pre,-,requisites,for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans). 
-question(['What',courses,require,course,X,Y,?], Ans).  :- coursesThatRequire(course(X,Y),Ans). 
+question(['What',courses,require,course,X,Y,?], Ans)  :- coursesThatRequire(course(X,Y),Ans). 
 question(['What',courses,have,X,credits,in,faculty,Y,?], Ans) :- faculty(Ans,Y), credits(Ans, X).
+
+
+
 
 
 /*
@@ -162,16 +161,33 @@ mp(L,L,_).
 % is an adjective that is true of Entity
 
 %adj([module | L], L, Enitity):- isModule(Entity).
-adj([core | L], L, Enitity):- core(Entity).
+%adj([core | L], L, Enitity):- core(Entity).
 
-noun([credits | L], L, Entity):- credits(Entity, N).
+%noun([credits | L], L, Entity):- credits(Entity, N).
 % Do we really need a 'degree' noun? noun([degree | L], L, Entity):-
-noun([module, course | L], L, course(X, Y)).
-noun([course | L], L, course(X, Y)).
-noun([courses | L], L, course(X, Y)). %not sure about this one.
-noun([pre-requisites | L], L, Entity):- (isEligible(Entity, X)).
-noun([faculty | L], L, Entity):- course(Entity, _).
+%noun([module, course | L], L, course(X, Y)).
+%noun([course | L], L, course(X, Y)).
+%noun([courses | L], L, course(X, Y)). %not sure about this one.
+%noun([pre-requisites | L], L, Entity):- (isEligible(Entity, X)).
+%noun([faculty | L], L, Entity):- course(Entity, _).
 
 reln([requirments| L],L,course(X,Y),course(A,B)) :- requires(course(X,Y),course(A,B)).
+
+
+%validateList(List) is true if List is a list of valid courses taken is not valid, based on the knowledge base in the course dict
+% test case: validateList([]). -> should produce true
+% test case: validateList([course(cpsc,110)]). -> should produce true
+% test case: validateList([course(cpsc,110), course(cpsc,121), course(cogs,200), course(cogs,303), course(cogs,300), course(cpsc,312), course(cpsc,221), course(cpsc,322), course(cpsc,320), course(biol,361), course(psyc,101), course(biol,200), course(phil,220), course(phil,378), course(ling,100)]).
+% test case: validateList([course(cpsc,110), course(cpsc,121)]).
+validateList([]). 
+validateList([course(Dept, Num)]) :- course(Dept, Num).
+validateList([H|T]) :- validateList(H), validateList(T).
+validateList([course(X,Y)|_]) :- 
+	\+ course(X,Y),
+	write(X), write(Y), 
+	nl, 
+	write('Is not a valid course name, please renter the courses you have taken'),
+	nl.
+	%welcome.
 
 

@@ -26,8 +26,7 @@ faculty(course(X,_),X) :-
 %noReqs(X) is true if X has no prerequisites.
 noReqs(X) :- \+ requires(X,_).
 	
-% Equivalent courses: hasTaken(X) is true if an equivalent course has been taken	TODO: figure out how to get this to work both ways
-isEquiv(X,Y) :- \+ dif(X,Y).
+
 
 % coursesToTake(X,C,L) is true if C are pre reqs needed for X that haven't been taken. CoursesToTake(X,_) is false if isEligible(X) is true.
 
@@ -74,7 +73,7 @@ filterFaculty(Fac,[H|T],[]) :-
 	\+ faculty(H,Fac),
 	filterFaculty(Fac,T,[]).
 filterFaculty(_,[],[]).
-
+%
 %totalNumberOfCredits([H|T], s) is true if X is the sum of all credits in the list of courses 
 %test case: totalNumberOfCredits([], X). X = 0;
 %test case: totalNumberOfCredits([course(phil,220)], X). X = 3
@@ -98,9 +97,18 @@ totalNumberOfCredits([course(Name, Number)| T], S) :-
 %>>>>>>> 33142926fc688e5d0380db2c2ad5749b60c00d3c
 
 %coursesThatRequire(C,L). is true when L is a list of courses which have C as one of their requirements.
-coursesThatRequire(C,[H|T]):- requires(X, R), elem(C, R), coursesThatRequire(C, T).
-coursesThatRequire(C, [H]):- requires(X, R), elem(C, R).
+%coursesThatRequire(C,L):- requires(X, R), elem(C, R), coursesThatRequire(C, [X|L]), elem(X, L).
+%coursesThatRequire(C, L):- requires(X, R), elem(C, R), elem(X,L).
+coursesThatRequire(C,L) :- requires(X,R), elem(C,R), coursesThatRequire(C, X), dif(X,C).  
+ 
 
 elem(E, [E]).
-elem(E, [E|R]).
-elem(E, [H|R]) :- elem(E, R).
+elem(E, [E|_]).
+elem(E, [_|R]) :- elem(E, R).
+
+
+
+
+
+
+
