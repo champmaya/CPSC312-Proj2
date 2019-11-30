@@ -8,9 +8,9 @@ To aks a question: swipl
 	  
 Questions & Queries: 
 
-% isEquiv(course(math, 100), X).
-% totalNumberOfCredits([course(cpsc,110), course(cpsc,121)], X).
-% question(['How',many,credits,is,course,cpsc,110,?], Ans).
+1. isEquiv(course(math, 100), X).
+2. totalNumberOfCredits([course(cpsc,110), course(cpsc,121)], X).
+3. question(['How',many,credits,is,course,cpsc,110,?], Ans).
 % question(['Tell',me,more,about,the,cogs,degree], Ans).
 % question(['What',are,the,core,courses,in,year,3,?], Ans).
 % question(['What',are,the,basic,requirements,of,the,cogs,degree], Ans). 
