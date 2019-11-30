@@ -79,7 +79,6 @@ ask(Q,A) :-
 % What courses require course psyc 101? 
 % What courses have 4 credits in faculty science? 
 
-
 %% ******************************************************NATURAL LANGUAGE PARSER************************************************
 
 
@@ -96,7 +95,6 @@ question(['What',faculty,is,course,X,Y,in,?], Ans) :- faculty(course(X,Y), Ans).
 question(['What',are,the,pre,-,requisites,for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans). 
 question(['What',courses,require,course,X,Y,?], Ans)  :- coursesThatRequire(course(X,Y), Ans, []). 
 question(['What',courses,have,X,credits,in,faculty,Y,?], Ans) :- faculty(Ans,Y), credits(Ans, X).
-
 
 
 
