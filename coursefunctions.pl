@@ -2,6 +2,7 @@
 
 :- include("coursedict.pl").
 
+
 % faculty(course(A,B),C) is true if course(A,B) is in faculty C
 faculty(course(anth, _),arts).
 faculty(course(asia, _),arts).
@@ -26,7 +27,8 @@ faculty(course(X,_),X) :-
 %noReqs(X) is true if X has no prerequisites.
 noReqs(X) :- \+ requires(X,_).
 	
-
+	
+	
 % coursesToTake(X,C,L) is true if C are pre reqs needed for X that haven't been taken. CoursesToTake(X,_) is false if isEligible(X) is true.
 
 coursesToTake(X,C,L) :- length(C,_),coursesToTake2(X,C,L).

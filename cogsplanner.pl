@@ -11,7 +11,7 @@ s
 % our system distinguishes between eligible courses (where the user meets all the prerequisites), and 
 % possible courses (where the user meets some of the prerequisites)s
 
-%:- include("coursedict.pl").
+:- include("coursedict.pl").
 :- include("coursefunctions.pl").
 
 % The dynamic declaration prevents undefined predicate errors.
@@ -95,7 +95,6 @@ question(['What',are,the,basic,requirements|_],
 question(['What',faculty,is,course,X,Y,in,?], Ans) :- faculty(course(X,Y), Ans).
 question(['What',are,the,pre,-,requisites,for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans). 
 question(['What',courses,require,course,X,Y,?], Ans)  :- coursesThatRequire(course(X,Y), Ans, []). 
-
 question(['What',courses,have,X,credits,in,faculty,Y,?], Ans) :- faculty(Ans,Y), credits(Ans, X).
 
 
@@ -187,5 +186,12 @@ validateList([course(X,Y)|_]) :-
 	write('Is not a valid course name, please renter the courses you have taken'),
 	nl.
 	%welcome.
+	
+	
+	
+
+	
+	
+	
 
 
