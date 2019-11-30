@@ -63,8 +63,10 @@ askQuestions(B) :-
 	write('Now that you have entered the courses you have taken feel free to ask me questions! Some example queries are: TODO (give proper syntax), for a comprehensive list of questions you can ask please see the README found on github. Thank you!'), nl, nl, 
     write("Ask me: "),nl, 
 	flush_output(current_output), 
-    readln(Q),
-    ask(B,Ans),
+    %readln(Q, _,_,[93,91,40,41,44,48,49],_),
+	readln(Q),
+	write(Q),
+    ask(Q,Ans),
 	write("The answer is: "),
 	write(Ans). 
 
@@ -73,12 +75,15 @@ askQuestions(B) :-
 ask(Q,A) :-
 	   question(Q,A).
 	   
-% What courses am i eligible for with current course list [course(cpsc,110)]?	
+% What courses am i eligible for with current course list [course(cpsc,110)]?   phil 220?      [course(cpsc,110)]?	
 % What courses am i eligible for with current course list [course(lower-year,101)]?
 % What are the core courses in year 3?
 % How many credits is course phil 220?
+% What faculty is course phil 220 in?
 % What are the pre-requisites for course cpsc 210? 
-% question(['What',courses,am,i,eligible,for,with,current,course,list,[course(cpsc,110)],?], Ans).
+% question(['What', are,the,pre-requisites,for,course,cpsc,210,?], Ans). %:- requires(course(X,Y), Ans). 
+% question(['What',courses,am,i,eligible,for,with,current,course,list,cpsc,110,phil,220
+% askQuestions(['What', are,the,pre-requisites,for,course,cpsc,210,?]). 
 % askQuestions(['What',courses,am,i,eligible,for,with,current,course,list,[course(cpsc,110)],?]). 
 
 % NATURAL LANGUAGE PARSER
@@ -88,14 +93,14 @@ ask(Q,A) :-
 question(['How',many,credits,is,course,X,Y,?], Ans) :- credits(course(X,Y), Ans).
 question(['Tell'|L], "Go to calendar.ubc.ca/vancouver/index.cfm?tree=12,215,410,421 to learn more information.").
 question(['What',are,the,core,courses,in,year,X,?], Ans) :- core(Ans), year(Ans, X). 
-question(['Why',?] [course(cpsc,110)]).  
+question(['Why',?], [course(cpsc,110)]).  
 question(['What',are,the,basic,requirements|L], 
     "Overall, 120 credits are required, 12 credits worth of module courses, 
     3 of which must be a 400-level CPSC module course, and 9 of which must be non-CPSC module courses at the 300 level or above. 
     All core courses must be completed before graduating.").
 question(['What',faculty,is,course,X,Y,in,?], Ans) :- faculty(course(X,Y), Ans).
-question(['What', 'are','the','pre-requisites',for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans). 
-question(['What',courses,am,i,eligible,for,with,current,course,list,L,?], Ans) :- findEligibleCourses(L,Ans).
+question(['What',are,the,pre,-,requisites,for,course,X,Y,?], Ans) :- requires(course(X,Y), Ans). 
+question(['What',courses,am,i,eligible,for,with,current,course,list,L,?], L).  % :- findEligibleCourses(L,Ans). 
 
 /*
 question(['What',are | L0], L1, Entity) :-
